@@ -33,6 +33,16 @@ const routes: IRoute[] = [
     component: Pages.Ranking,
   },
   {
+    path: "/sign-in",
+    name: "SignIn",
+    component: Pages.SignIn,
+  },
+  {
+    path: "/sign-up",
+    name: "SignUp",
+    component: Pages.SignUp,
+  },
+  {
     path: "/subscription-plan",
     name: "SubscriptionPlan",
     component: Pages.SubscriptionPlan,
