@@ -1,0 +1,93 @@
+[
+    {
+        "id": 0,
+        "title": "TÍTULO DEL CONTRATO",
+        "date": "15/04/2022",
+        "observations": 15,
+        "favorite": false
+    },
+    {
+        "id": 1,
+        "title": "Contrato de seguro por préstamos de auto",
+        "date": "21/01/2022",
+        "observations": 10,
+        "favorite": false
+    },
+    {
+        "id": 2,
+        "title": "Contrato por préstamo hipotecario",
+        "date": "09/11/2021",
+        "observations": 23,
+        "favorite": true
+    },
+    {
+        "id": 3,
+        "title": "Contrato de arrendamiento",
+        "date": "12/12/2021",
+        "observations": 5,
+        "favorite": true
+    },
+    {
+        "id": 4,
+        "title": "Contrato de servicios profesionales",
+        "date": "01/01/2021",
+        "observations": 8,
+        "favorite": false
+    },
+    {
+        "id": 5,
+        "title": "Contrato de trabajo",
+        "date": "15/02/2020",
+        "observations": 12,
+        "favorite": true
+    },
+    {
+        "id": 6,
+        "title": "Contrato de venta",
+        "date": "25/03/2019",
+        "observations": 20,
+        "favorite": false
+    },
+    {
+        "id": 7,
+        "title": "Contrato de alquiler",
+        "date": "15/04/2018",
+        "observations": 7,
+        "favorite": true
+    },
+    {
+        "id": 8,
+        "title": "Contrato de licencia de software",
+        "date": "21/01/2017",
+        "observations": 14,
+        "favorite": false
+    },
+    {
+        "id": 9,
+        "title": "Contrato de mantenimiento",
+        "date": "09/11/2016",
+        "observations": 19,
+        "favorite": true
+    },
+    {
+        "id": 10,
+        "title": "Contrato de distribución",
+        "date": "12/12/2015",
+        "observations": 6,
+        "favorite": false
+    },
+    {
+        "id": 11,
+        "title": "Contrato de franquicia",
+        "date": "01/01/2014",
+        "observations": 9,
+        "favorite": true
+    },
+    {
+        "id": 12,
+        "title": "Contrato de confidencialidad",
+        "date": "15/02/2013",
+        "observations": 13,
+        "favorite": false
+    }
+]
