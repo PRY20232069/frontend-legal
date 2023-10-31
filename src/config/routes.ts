@@ -47,6 +47,11 @@ const routes: IRoute[] = [
     name: "SubscriptionPlan",
     component: Pages.SubscriptionPlan,
   },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Pages.Profile,
+  },
 ];
 
 export default routes;
