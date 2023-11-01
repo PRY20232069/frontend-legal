@@ -1,0 +1,40 @@
+{
+  "personalInformation": {
+    "id": 0,
+    "name": "Rodrigo",
+    "lastName": "Armendariz",
+    "email": "roar@gmail.com",
+    "sex": false,
+    "birthday": "16/11/2002",
+    "document": 123456789
+  },
+  "membership": {
+    "plan": {
+      "planId": 0,
+      "planName": "basic",
+      "description": "bla bla bla",
+      "limit": 3
+    },
+    "usage": 1
+  },
+  "plans": [
+    {
+      "planId": 0,
+      "planName": "Basic",
+      "description": "Este plan te permite analizar documentos de hasta 20 páginas",
+      "limit": 3
+    },
+    {
+      "planId": 1,
+      "planName": "Medium",
+      "description": "Este plan te permite analizar documentos de hasta 25 páginas",
+      "limit": 5
+    },
+    {
+      "planId": 2,
+      "planName": "Genius",
+      "description": "Este plan te permite analizar documentos de hasta 40 páginas",
+      "limit": 8
+    }
+  ]
+}

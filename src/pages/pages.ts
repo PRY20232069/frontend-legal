@@ -7,6 +7,7 @@ import Ranking from "./Ranking";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import SubscriptionPlan from "./SubscriptionPlan";
+import Profile from "./Profile";
 
 export {
   Configuration,
@@ -18,4 +19,5 @@ export {
   SignIn,
   SignUp,
   SubscriptionPlan,
+  Profile,
 };
