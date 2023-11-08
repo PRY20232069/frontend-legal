@@ -2,6 +2,7 @@ import { drawerWidth } from "../../config/const";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -70,4 +71,26 @@ export const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
+}));
+
+export const OutlinedButton = styled(Button)(() => ({
+  color: "#fff",
+  borderColor: "#ff8e01",
+  "&:hover": {
+    borderColor: "#ff8e01",
+    backgroundColor: "#ff8e01",
+    color: "#000",
+  },
+}));
+
+export const ContainedButton = styled(Button)(() => ({
+  color: "#fff",
+  backgroundColor: "#ff8e01",
+  borderColor: "#ff8e01",
+  boxShadow: "0px 0px 0px 0px",
+  "&:hover": {
+    borderColor: "#ff8e01",
+    backgroundColor: "#ff8e01",
+    opacity: "0.5",
+  },
 }));
