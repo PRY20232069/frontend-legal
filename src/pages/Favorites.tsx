@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import { Box } from "@mui/material";
 import { DrawerHeader } from "../components/shared/Material";
 import { styled } from '@mui/system';
-import historyExamples from '../helpers/history_examples.json';
+import historyExamples from '../shared/utils/mock/history_examples.json';
 import whiteStar from '../assets/star_white.svg';
 import yellowStar from '../assets/star_yellow.svg';
 

@@ -7,7 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { IconDrawer } from "../../../interfaces/IIconDrawer";
+import { IconDrawer } from "../../../../interfaces/IIconDrawer";
 import { useTheme } from "@mui/material/styles";
 import {
   Divider,
@@ -18,7 +18,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { Drawer, DrawerHeader } from "../Material";
+import { Drawer, DrawerHeader } from "../../Material";
 
 interface ISidebarNavigation {
   open: boolean;

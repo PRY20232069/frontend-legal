@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SidebarNavigation from "./SidebarNavigation";
-import { AppBar } from "../Material";
+import { AppBar } from "../../Material";
 import { AccountCircle } from "@mui/icons-material";
 
 const Header = () => {
