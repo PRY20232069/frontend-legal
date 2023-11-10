@@ -4,8 +4,8 @@ import { Box } from "@mui/material";
 import { DrawerHeader } from "../components/shared/Material";
 import { styled } from '@mui/system';
 import historyExamples from '../shared/utils/mock/history_examples.json';
-import whiteStar from '../assets/star_white.svg';
-import yellowStar from '../assets/star_yellow.svg';
+import whiteStar from '../assets/svgs/star_white.svg';
+import yellowStar from '../assets/svgs/star_yellow.svg';
 
 const SearchBar = ({ searchTerm, setSearchTerm }: any) => {
 

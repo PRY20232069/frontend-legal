@@ -1,5 +1,11 @@
+import styled from "@emotion/styled";
+
+const TitleH2 = styled.h2`
+    margin-bottom: 0;
+`;
+
 export const PageTitle = (props: any) => {
     return (
-        <h2>{props.children}</h2>
+        <TitleH2>{props.children}</TitleH2>
     );
 };

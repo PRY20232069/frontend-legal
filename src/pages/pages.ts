@@ -1,7 +1,7 @@
 import Configuration from "./Configuration";
 import DocumentAnalyzer from "./DocumentAnalyzer";
 import Favorites from "./Favorites";
-import History from "./History";
+import { History } from "./History";
 import Home from "./Home";
 import Ranking from "./Ranking";
 import SignIn from "./SignIn";

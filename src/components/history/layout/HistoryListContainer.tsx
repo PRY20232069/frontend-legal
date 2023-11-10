@@ -1,13 +1,18 @@
+import styled from "@emotion/styled";
+
 export const HistoryListContainer = (props: any) => {
-    const ulStyle: React.CSSProperties = {
+    const HistoryList = styled('ul')(({ theme }) => ({
         display: 'flex',
         flexDirection: 'column',
-        gap: '10px'
-    };
+        padding: '0',
+        margin: '20px 0 0 0',
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        borderRadius: '12px',
+    }));
 
     return (
-        <ul style={ulStyle}>
+        <HistoryList>
             {props.children}
-        </ul>
+        </HistoryList>
     );
 }
