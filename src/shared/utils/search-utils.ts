@@ -4,8 +4,15 @@ export const removeDiacritics = (str: any) => {
 };
 
   // Filter the items based on the filterKey and searchTerm
-export const filterItems = (items: any[], filterKey: string, searchTerm: string) => {
+export const filterItemsByString = (items: any[], filterKey: string, searchTerm: string) => {
     return items.filter(item =>
         removeDiacritics((item[filterKey] as string).toLowerCase()).includes(removeDiacritics(searchTerm.toLowerCase()))
+    );
+};
+
+// Filter the items based on the filterKey and searchTerm and boolean
+export const filterItemsByStringAndBoolean = (items: any[], stringFilterKey: string, searchTerm: string, booleanFilterKey: string) => {
+    return items.filter(item => item[booleanFilterKey] === true &&
+        removeDiacritics((item[stringFilterKey] as string).toLowerCase()).includes(removeDiacritics(searchTerm.toLowerCase()))
     );
 };

@@ -34,10 +34,15 @@ const ListItemLink = (props:any) => {
 }
 
 export const HistoryListItem: React.FC<Props> = ({ data, onUpdate }) => {
-    const handleClick = useCallback(() => {
+    const updateData = useCallback(() => {
         const updatedData = { ...data, favorite: !data.favorite } as IDocument;
         onUpdate(updatedData);
     }, [data, onUpdate]);
+
+    const handleClick = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        updateData();
+    }
 
     // Rest of your component
     return (
