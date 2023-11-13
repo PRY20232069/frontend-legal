@@ -8,6 +8,11 @@ const routes: IRoute[] = [
     component: Pages.Configuration,
   },
   {
+    path: "/upload-contract",
+    name: "UploadContract",
+    component: Pages.UploadContract,
+  },
+  {
     path: "/document-analyzer",
     name: "DocumentAnalyzer",
     component: Pages.DocumentAnalyzer,

@@ -51,7 +51,7 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
     {
       text: "Analizar documento",
       icon: <TroubleshootIcon />,
-      link: "/document-analyzer",
+      link: "/upload-contract",
     },
     {
       text: "Historial",

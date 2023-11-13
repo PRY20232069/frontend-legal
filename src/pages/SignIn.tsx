@@ -2,8 +2,44 @@ import { Button, Checkbox, FormControlLabel, TextField, FormHelperText } from '@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UsersApiService } from '../services/UsersApiService';
-import { SaveUserResource } from '../resources/SaveUserResource';
-import { UserResource } from '../resources/UserResource';
+import { SaveUserResource } from '../resources/requests/SaveUserResource';
+import { UserResource } from '../resources/responses/UserResource';
+import { SaveProfileResource } from '../resources/requests/SaveProfileResource';
+import { ProfileResource } from '../resources/responses/ProfileResource';
+import { ProfilesApiService } from '../services/ProfilesApiService';
+
+const loginUser = async (email: string, password: string): Promise<any> => {
+  try {
+    const saveUserResource: SaveUserResource = { email, password };
+    const userResource: UserResource = await UsersApiService.loginUser(saveUserResource);
+
+    localStorage.setItem('token', userResource.token);
+
+    return userResource;
+  } catch (error) {
+    console.error('Error during authentication', error);
+  }
+};
+
+const registerProfile = async (): Promise<any> => {
+  try {
+    const saveProfileResource: SaveProfileResource = { name: 'string', last_name: 'string', birth_date: new Date(), district: 'string', region: 'string' };
+    const profileResource: ProfileResource = await ProfilesApiService.createProfile(saveProfileResource);
+    
+    return profileResource
+  } catch (error) {
+    console.error('Error during profile creation', error);
+  }
+};
+
+const getProfile = async (): Promise<any> => {
+  try {
+    const profileResource: ProfileResource = await ProfilesApiService.getProfile();
+    return profileResource
+  } catch (error) {
+    console.error('Error while getting profile', error);
+  }
+};
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -50,14 +86,23 @@ export const SignIn = () => {
     }
 
     if (!emailError && !passwordError && !error) {
-      try {
-        const saveUserResource: SaveUserResource = { email, password };
-        const userResource: UserResource = await UsersApiService.loginUser(saveUserResource);
-        localStorage.setItem('token', userResource.token);
-        navigate('/');
-      } catch (error) {
-        console.error('Error during login', error);
+      const userResource = await loginUser(email, password);
+      if (!userResource || !userResource.token) {
+        return; // something was wrong
       }
+
+      const existingProfile = await getProfile();
+      if (existingProfile && existingProfile.id) {
+        navigate('/'); // ideal scenario
+        return;
+      }
+      
+      const profileResource = await registerProfile();
+      if (!profileResource || !profileResource.id) {
+        return; // something was wrong in registration
+      }
+      
+      navigate('/');
     }
   };
 

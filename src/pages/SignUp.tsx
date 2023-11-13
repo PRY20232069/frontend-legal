@@ -2,8 +2,45 @@ import { Button, TextField, FormHelperText } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UsersApiService } from '../services/UsersApiService';
-import { UserResource } from '../resources/UserResource';
-import { SaveUserResource } from '../resources/SaveUserResource';
+import { UserResource } from '../resources/responses/UserResource';
+import { SaveUserResource } from '../resources/requests/SaveUserResource';
+import { SaveProfileResource } from '../resources/requests/SaveProfileResource';
+import { ProfileResource } from '../resources/responses/ProfileResource';
+import { ProfilesApiService } from '../services/ProfilesApiService';
+
+
+const registerUser = async (email: string, password: string): Promise<any> => {
+  try {
+    const saveUserResource: SaveUserResource = { email, password };
+    const userResource: UserResource = await UsersApiService.registerUser(saveUserResource);
+
+    localStorage.setItem('token', userResource.token);
+
+    return userResource;
+  } catch (error) {
+    console.error('Error during registration', error);
+  }
+};
+
+const registerProfile = async (): Promise<any> => {
+  try {
+    const saveProfileResource: SaveProfileResource = { name: 'string', last_name: 'string', birth_date: new Date(), district: 'string', region: 'string' };
+    const profileResource: ProfileResource = await ProfilesApiService.createProfile(saveProfileResource);
+    
+    return profileResource
+  } catch (error) {
+    console.error('Error during profile creation', error);
+  }
+};
+
+const getProfile = async (): Promise<any> => {
+  try {
+    const profileResource: ProfileResource = await ProfilesApiService.getProfile();
+    return profileResource
+  } catch (error) {
+    console.error('Error while getting profile', error);
+  }
+};
 
 export const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -50,15 +87,23 @@ export const SignUp = () => {
     }
 
     if (!emailError && !passwordError && !error) {
-      try {
-        const saveUserResource: SaveUserResource = { email, password };
-        const userResource: UserResource = await UsersApiService.registerUser(saveUserResource);
-        console.log(userResource);
-        localStorage.setItem('token', userResource.token);
-        navigate('/');
-      } catch (error) {
-        console.error('Error during registration', error);
+      const userResource = await registerUser(email, password);
+      if (!userResource || !userResource.id || !userResource.token) {
+        return; // something was wrong
       }
+
+      const existingProfile = await getProfile();
+      if (existingProfile && existingProfile.id) {
+        navigate('/');
+        return;
+      }
+      
+      const profileResource = await registerProfile();
+      if (!profileResource || !profileResource.id) {
+        return; // something was wrong
+      }
+      
+      navigate('/'); // ideal scenario
     }
   };
 

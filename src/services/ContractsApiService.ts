@@ -3,7 +3,7 @@ import { api } from "./HttpCommon";
 export class ContractsApiService {
     static baseUrl = '/contracts';
 
-    static createContract(data: any) {
+    static uploadContract(data: any) {
         return api.post(this.baseUrl, data);
     }
 

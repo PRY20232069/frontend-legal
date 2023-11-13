@@ -1,5 +1,5 @@
-import { SaveUserResource } from "../resources/SaveUserResource";
-import { UserResource } from "../resources/UserResource";
+import { SaveUserResource } from "../resources/requests/SaveUserResource";
+import { UserResource } from "../resources/responses/UserResource";
 import { api } from "./HttpCommon";
 
 export class UsersApiService {
