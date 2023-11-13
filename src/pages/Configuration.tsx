@@ -1,8 +1,7 @@
-import React from "react";
 import { Box } from "@mui/material";
 import { DrawerHeader } from "../components/shared/Material";
 
-const Configuration = () => {
+export const Configuration = () => {
   return (
     <Box component="main">
       <DrawerHeader />
@@ -10,5 +9,3 @@ const Configuration = () => {
     </Box>
   );
 };
-
-export default Configuration;

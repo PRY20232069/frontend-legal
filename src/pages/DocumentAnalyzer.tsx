@@ -8,7 +8,7 @@ import Details from "../components/documentAnalyzer/Details";
 import IDocumentAnalysis from "../interfaces/IDocumentAnalysis";
 import ModalDetails from "../components/documentAnalyzer/ModalDetails";
 
-const DocumentAnalyzer = () => {
+export const DocumentAnalyzer = () => {
   const [data] = useState<IDocumentAnalysis>(document);
   const [clauseSelected, setClauseSelected] = useState<number>(-1);
   const [pageSelected, setPageSelected] = useState<number>(1);
@@ -47,5 +47,3 @@ const DocumentAnalyzer = () => {
     </>
   );
 };
-
-export default DocumentAnalyzer;

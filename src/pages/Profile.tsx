@@ -8,7 +8,7 @@ import { DrawerHeader } from "../components/shared/Material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 
-const Profile = () => {
+export const Profile = () => {
   const [data] = useState<IProfile>(dataJson);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -22,5 +22,3 @@ const Profile = () => {
     </Box>
   );
 };
-
-export default Profile;
