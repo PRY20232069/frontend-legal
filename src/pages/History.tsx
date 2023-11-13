@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
 import { IDocument } from "../interfaces/IHistory";
-import { filterItems } from "../shared/utils/search-utils";
+import { filterItemsByString } from "../shared/utils/search-utils";
 import { SearchBar } from "../components/shared/widgets/SearchBar";
 import { HistoryListItem } from "../components/history/widgets/HistoryListItem";
 import { PageContainer } from "../components/shared/layout/PageContainer";
 import { PageTitle } from "../components/shared/widgets/PageTitle";
 import { PageSubtitle } from "../components/shared/widgets/PageSubtitle";
-import { HistoryOptionsBar } from "../components/history/layout/HistoryOptionsBar";
+import { FiltersBar } from "../components/shared/layout/FiltersBar";
 import { HistoryListContainer } from "../components/history/layout/HistoryListContainer";
 
 import historyExamplesData from '../shared/utils/mock/history_examples.json';
@@ -16,7 +16,7 @@ export const History = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [historyItems, setHistoryItems] = useState(historyExamplesData as IDocument[]);
 
-  const filteredItems = filterItems(historyItems, 'title', searchTerm);
+  const filteredItems = filterItemsByString(historyItems, 'title', searchTerm);
 
   const onHistoryItemUpdate = useCallback((updatedData: IDocument) => {
     setHistoryItems(prevItems => {
@@ -32,9 +32,9 @@ export const History = () => {
       <PageTitle>Historial</PageTitle>
       <PageSubtitle>Explora y gestiona todos tus contratos analizados</PageSubtitle>
 
-      <HistoryOptionsBar>
+      <FiltersBar>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      </HistoryOptionsBar>
+      </FiltersBar>
 
       <HistoryListContainer>
         <HistoryListHeader />
