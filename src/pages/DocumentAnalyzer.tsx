@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import { Box } from "@mui/material";
 import { DrawerHeader } from "../components/shared/Material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -7,8 +8,33 @@ import Document from "../components/documentAnalyzer/Document";
 import Details from "../components/documentAnalyzer/Details";
 import IDocumentAnalysis from "../interfaces/IDocumentAnalysis";
 import ModalDetails from "../components/documentAnalyzer/ModalDetails";
+import { ContractResource } from "../resources/responses/ContractResource";
+import { ContractsApiService } from "../services/ContractsApiService";
+
+const getContractById = async (id: number): Promise<any> => {
+  try {
+      const contractResource: ContractResource = await ContractsApiService.getContractById(id);
+      return contractResource;
+  } catch (error) {
+      console.error('Error during file upload', error);
+  }
+};
 
 export const DocumentAnalyzer = () => {
+  const { id } = useParams();
+  const [contract, setContract] = useState<ContractResource | null>(null);
+
+  useEffect(() => {
+    const fetchContract = async () => {
+      if (id !== undefined) {
+        const contractData = await getContractById(Number(id));
+        setContract(contractData);
+      }
+    };
+
+    fetchContract();
+  }, [id]);
+
   const [data] = useState<IDocumentAnalysis>(document);
   const [clauseSelected, setClauseSelected] = useState<number>(-1);
   const [pageSelected, setPageSelected] = useState<number>(1);

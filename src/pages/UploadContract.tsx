@@ -33,7 +33,7 @@ export const UploadContract = () => {
         if (selectedFile) {
             const contractResource = await uploadContract(selectedFile.name);
             if (contractResource && contractResource.id) {
-                navigate('/document-analyzer');
+                navigate(`/document-analyzer/${contractResource.id}`);
             }
         }
     };
@@ -44,7 +44,7 @@ export const UploadContract = () => {
             <UploadContractBtn onFileChange={handleFileChange} />
             {showAnalyzeButton && (
                 <>
-                    <p>Selected file: {selectedFile?.name}</p>
+                    <p>Archivo seleccionado: {selectedFile?.name}</p>
                     <Button variant="contained" onClick={handleAnalyzeClick}>Analizar</Button>
                 </>
             )}

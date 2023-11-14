@@ -9,6 +9,7 @@ import { SignUp } from "./SignUp";
 import { SubscriptionPlan } from "./SubscriptionPlan";
 import { Profile } from "./Profile";
 import { UploadContract } from "./UploadContract";
+import { DocumentAnalyzerTEST } from "./DocumentAnalyzerTEST";
 
 export {
   Configuration,
@@ -22,4 +23,5 @@ export {
   SubscriptionPlan,
   Profile,
   UploadContract,
+  DocumentAnalyzerTEST,
 };

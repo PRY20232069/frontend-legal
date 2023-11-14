@@ -13,9 +13,14 @@ const routes: IRoute[] = [
     component: Pages.UploadContract,
   },
   {
-    path: "/document-analyzer",
+    path: "/document-analyzer/:id",
     name: "DocumentAnalyzer",
     component: Pages.DocumentAnalyzer,
+  },
+  {
+    path: "/document-analyzer-test/:id",
+    name: "DocumentAnalyzerTEST",
+    component: Pages.DocumentAnalyzerTEST,
   },
   {
     path: "/favorites",

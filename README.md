@@ -59,3 +59,6 @@ More info: https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-comm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+For React PDF Viewer see: https://react-pdf-viewer.dev/docs/basic-usage/
