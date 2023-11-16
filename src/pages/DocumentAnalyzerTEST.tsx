@@ -6,15 +6,15 @@ import { PageContainer } from "../components/shared/layout/PageContainer";
 import { PageTitle } from "../components/shared/widgets/PageTitle";
 
 import pdfFile from "./CONTRATO_TARJETA_DE_CREDITO.pdf";
-import { PDFViewerTEST } from "../components/documentAnalyzer/PDFViewerTEST";
+import { PDFViewerTEST } from "../components/documentAnalyzer/pdfViewer/PDFViewerTEST";
 
 const getContractById = async (id: number): Promise<any> => {
-    try {
-        const contractResource: ContractResource = await ContractsApiService.getContractById(id);
-        return contractResource;
-    } catch (error) {
-        console.error('Error during file upload', error);
-    }
+    // try {
+    //     const contractResource: ContractResource = await ContractsApiService.getContractById(id);
+    //     return contractResource;
+    // } catch (error) {
+    //     console.error('Error during file upload', error);
+    // }
 };
 
 export const DocumentAnalyzerTEST = () => {
@@ -36,7 +36,7 @@ export const DocumentAnalyzerTEST = () => {
         <PageContainer>
             <PageTitle>{contract ? contract.name : 'Loading...'}</PageTitle>
 
-            <PDFViewerTEST pdfFile={pdfFile} />
+            <PDFViewerTEST fileUrl={pdfFile} />
         </PageContainer>
     );
 };
