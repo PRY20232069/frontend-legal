@@ -6,11 +6,13 @@ import { ContractResource } from "../resources/responses/ContractResource";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@mui/material";
 
-const uploadContract = async (name: string): Promise<any> => {
+const uploadContract = async (name: string, file: any): Promise<any> => {
     try {
         const saveContractResource: SaveContractResource = { name, bank_id: 1 };
         const contractResource: ContractResource = await ContractsApiService.uploadContract(saveContractResource);
-        return contractResource;
+
+        const contractWithUrlResource: ContractResource = await ContractsApiService.uploadPDF(contractResource.id, file);
+        return contractWithUrlResource;
     } catch (error) {
         console.error('Error during file upload', error);
     }
@@ -31,7 +33,8 @@ export const UploadContract = () => {
 
     const handleAnalyzeClick = async () => {
         if (selectedFile) {
-            const contractResource = await uploadContract(selectedFile.name);
+            const contractResource = await uploadContract(selectedFile.name, selectedFile);
+            console.log(contractResource);
             if (contractResource && contractResource.id) {
                 navigate(`/document-analyzer/${contractResource.id}`);
             }

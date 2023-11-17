@@ -25,7 +25,7 @@ import { BadTerms } from '../saving';
 import { HighlightsRenderer } from './HighlightRenderer';
 import React from 'react';
 
-interface PDFViewerTESTProps {
+interface PDFViewerProps {
     fileUrl: string;
 }
 
@@ -36,7 +36,7 @@ interface Note {
     quote: string;
 }
 
-export const PDFViewerTEST: React.FC<PDFViewerTESTProps> = ({ fileUrl }) => {
+export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl }) => {
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pageNavigationPluginInstance = pageNavigationPlugin({
         enableShortcuts: true,

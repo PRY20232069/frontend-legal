@@ -18,11 +18,6 @@ const routes: IRoute[] = [
     component: Pages.DocumentAnalyzer,
   },
   {
-    path: "/document-analyzer-test/:id",
-    name: "DocumentAnalyzerTEST",
-    component: Pages.DocumentAnalyzerTEST,
-  },
-  {
     path: "/favorites",
     name: "Favorites",
     component: Pages.Favorites,

@@ -7,6 +7,10 @@ export class ContractsApiService {
         return api.post(this.baseUrl, data);
     }
 
+    static uploadPDF(contractId: number, file: any) {
+        return api.putFile(`${this.baseUrl}/${contractId}`, file);
+    }
+
     // static updateContract(contractId: number, data: any) {
     //     return api.put(`${this.baseUrl}/${contractId}`, data);
     // }
