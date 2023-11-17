@@ -6,6 +6,8 @@ import { PageContainer } from "../components/shared/layout/PageContainer";
 import { PageTitle } from "../components/shared/widgets/PageTitle";
 
 import { PDFViewer } from "../components/documentAnalyzer/pdfViewer/PDFViewer";
+import { TermsApiService } from "../services/TermsApiService";
+import { TermResource } from "../resources/responses/TermResource";
 
 const getContractById = async (id: number): Promise<any> => {
     try {
@@ -17,15 +19,31 @@ const getContractById = async (id: number): Promise<any> => {
     }
 };
 
+const getAllTermsByContractId = async (contractId: number): Promise<any> => {
+    try {
+        const termResources: TermResource[] = await TermsApiService.getAllTermsByContractId(contractId);
+        return termResources;
+    } catch (error) {
+        console.error('Error getting terms', error);
+    }
+}
+
 export const DocumentAnalyzer = () => {
     const { id } = useParams();
     const [contract, setContract] = useState<ContractResource | null>(null);
+    const [terms, setTerms] = useState<TermResource | null>(null);
 
     useEffect(() => {
         const fetchContract = async () => {
             if (id !== undefined) {
                 const contractData = await getContractById(Number(id));
                 setContract(contractData);
+
+                if (contractData) {
+                    const termsData = await getAllTermsByContractId(contractData.id);
+                    setTerms(termsData);
+                    console.log(termsData);
+                }
             }
         };
 

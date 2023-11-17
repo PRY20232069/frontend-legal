@@ -10,8 +10,19 @@ const uploadContract = async (name: string, file: any): Promise<any> => {
     try {
         const saveContractResource: SaveContractResource = { name, bank_id: 1 };
         const contractResource: ContractResource = await ContractsApiService.uploadContract(saveContractResource);
+        if (!contractResource.id) {
+            throw new Error('Contract id is not defined');
+        }
 
         const contractWithUrlResource: ContractResource = await ContractsApiService.uploadPDF(contractResource.id, file);
+        console.log(contractWithUrlResource);
+        if (!contractWithUrlResource.file_url) {
+            throw new Error('File url is not defined');
+        }
+        
+        const termResources = await ContractsApiService.generateTermsInterpretationByContractId(contractWithUrlResource.id);
+        console.log(termResources);
+        
         return contractWithUrlResource;
     } catch (error) {
         console.error('Error during file upload', error);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import HomeIcon from "@mui/icons-material/Home";
 import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
@@ -19,6 +19,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Drawer, DrawerHeader } from "../../Material";
+import { useLocation } from "react-router-dom";
 
 interface ISidebarNavigation {
   open: boolean;
@@ -31,6 +32,7 @@ interface ISidebarNavigation {
 
 const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
 
   const handleLink = (url: string, n: number) => {
@@ -69,6 +71,19 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
       link: "/ranking",
     },
   ];
+
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+  
+    const reversedIconos = [...iconos].reverse();
+    const selectedIndex = reversedIconos.findIndex(icono => currentPath.includes(icono.link));
+    
+    if (selectedIndex !== -1) {
+      const originalIndex = iconos.length - 1 - selectedIndex;
+      props.setSelectedPage(originalIndex);
+    }
+  }, []);
 
   return (
     <Drawer variant="permanent" open={props.open}>

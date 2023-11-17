@@ -7,6 +7,22 @@ import markSvg from '../../../assets/svgs/mark.svg';
 import markOutlinedSvg from '../../../assets/svgs/mark_outlined.svg';
 import styled from '@emotion/styled';
 import { ContractResource } from '../../../resources/responses/ContractResource';
+import { SaveContractResource } from '../../../resources/requests/SaveContractResource';
+import { ContractsApiService } from '../../../services/ContractsApiService';
+
+const markContractAsFavorite = async (contract: ContractResource): Promise<any> => {
+    try {
+        let saveContractResource: SaveContractResource = { 
+            name: contract.name, 
+            bank_id: contract.bank_id, 
+            favorite: !contract.favorite
+         };
+        const contractResource: ContractResource = await ContractsApiService.updateContract(contract.id, saveContractResource);
+        return contractResource;
+    } catch (error) {
+        console.error('Error during file upload', error);
+    }
+};
 
 type Props = {
     data: ContractResource;
@@ -24,7 +40,7 @@ const ListItemContainer = styled('li')(({ theme }) => ({
     },
 }));
 
-const ListItemLink = (props:any) => {
+const ListItemLink = (props: any) => {
     const navigate = useNavigate();
 
     return (
@@ -43,12 +59,13 @@ export const HistoryListItem: React.FC<Props> = ({ data, onUpdate }) => {
     const handleClick = (event: React.MouseEvent) => {
         event.stopPropagation();
         updateData();
+        markContractAsFavorite(data);
     }
 
     // Rest of your component
     return (
         <ListItemContainer>
-            <ListItemLink to="/document-analyzer">
+            <ListItemLink to={`/document-analyzer/${data.id}`}>
                 <div style={{ flex: 3 }}>{data.name}</div>
                 <div style={{ flex: 1 }}>{data.uploaded_date.toString()}</div>
                 <div style={{ flex: 2 }}>Cantidad de observaciones: 5 {/*data.num_observations*/}</div>

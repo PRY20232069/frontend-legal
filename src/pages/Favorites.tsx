@@ -39,7 +39,7 @@ export const Favorites = () => {
   useEffect(() => {
     const filtered = filterItemsByStringAndBoolean(contractItems, 'name', searchTerm, 'favorite');
     setFilteredItems(filtered);
-  }, [searchTerm]);
+  }, [contractItems, searchTerm]);
 
   const onHistoryItemUpdate = useCallback((updatedData: ContractResource) => {
     setContractItems(prevItems => {

@@ -23,15 +23,13 @@ const getAllContracts = async (): Promise<any> => {
 
 export const History = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [contractItems, setHistoryItems] = useState<ContractResource[]>([]);
+  const [contractItems, setContractItems] = useState<ContractResource[]>([]);
   const [filteredItems, setFilteredItems] = useState<ContractResource[]>([]);
-
-  // const filteredItems = filterItemsByString(contractItems, 'name', searchTerm);
 
   useEffect(() => {
     const fetchContracts = async () => {
       const contractResources = await getAllContracts();
-      setHistoryItems(contractResources);
+      setContractItems(contractResources);
       setFilteredItems(contractResources);
     };
 
@@ -41,10 +39,10 @@ export const History = () => {
   useEffect(() => {
     const filtered = filterItemsByString(contractItems, 'name', searchTerm);
     setFilteredItems(filtered);
-  }, [searchTerm]);
+  }, [contractItems, searchTerm]);
 
   const onHistoryItemUpdate = useCallback((updatedData: ContractResource) => {
-    setHistoryItems(prevItems => {
+    setContractItems(prevItems => {
       const updatedItems = [...prevItems];
       const index = updatedItems.findIndex(item => item.id === updatedData.id);
       updatedItems[index] = updatedData;
@@ -63,9 +61,14 @@ export const History = () => {
 
       <HistoryListContainer>
         <HistoryListHeader />
-        {filteredItems.map((item, index) => (
-          <HistoryListItem key={index} data={item} onUpdate={onHistoryItemUpdate} />
-        ))}
+        {filteredItems && (
+          filteredItems.length > 0 ?
+            filteredItems.map((item, index) => (
+              <HistoryListItem key={index} data={item} onUpdate={onHistoryItemUpdate} />
+            )) :
+            <p style={{ marginLeft: 15 }}>No hay contratos en el historial</p>
+        )
+        }
       </HistoryListContainer>
     </PageContainer>
   );
