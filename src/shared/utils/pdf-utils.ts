@@ -26,15 +26,16 @@ export const HighlightTermSearched = (BadTerm: string, highlightTermSearchedInde
 
                 while (badTermWordIndex < badTermWords.length && matchingWordIndex < textWords.length) {
                     if (badTermWords[badTermWordIndex] !== textWords[matchingWordIndex]) {
-                        mismatched = true;
-                        break;
-
-                        // if (badTermWordIndex === badTermWords.length - 1) { // if it's the last word in the bad term
-                        //     mismatched = false;
-                        // }
-                        // else {
-                        //     break;
-                        // }
+                        if (badTermWords[badTermWordIndex].includes(textWords[matchingWordIndex])) {
+                            matchingWordIndex++;
+                        }
+                        else if (textWords[matchingWordIndex].includes(badTermWords[badTermWordIndex])) {
+                            badTermWordIndex++;
+                        }
+                        else {
+                            mismatched = true;
+                            break;
+                        }
                     }
 
                     badTermWordIndex++;

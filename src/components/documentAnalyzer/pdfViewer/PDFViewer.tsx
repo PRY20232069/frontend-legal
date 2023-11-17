@@ -19,6 +19,11 @@ import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
 import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 import { useEffect, useState } from 'react';
 
+// Tool Bar
+import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
+import '@react-pdf-viewer/toolbar/lib/styles/index.css';
+import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
+
 // PDF Utils
 import { HighlightTermSearched } from '../../../shared/utils/pdf-utils';
 import { BadTerms } from '../saving';
@@ -38,17 +43,48 @@ interface CanShowBadTerms {
 
 interface Note {
     id: number;
-    content: string;
+    interpretation: string;
     highlightAreas: HighlightArea[];
-    quote: string;
+    description: string;
 }
 
 export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
-    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+    const transform: TransformToolbarSlot = (slot: ToolbarSlot) => {
+        const { NumberOfPages } = slot;
+
+        return Object.assign({}, slot, {
+            ...slot,
+            Open: () => <></>,
+            OpenMenuItem: () => <></>,
+            Search: () => <></>,
+            ShowSearchPopover: () => <></>,
+            EnterFullScreen: () => <></>,
+            EnterFullScreenMenuItem: () => <></>,
+            SwitchTheme: () => <></>,
+            SwitchThemeMenuItem: () => <></>,
+            NumberOfPages: () => (
+                <>
+                    / <NumberOfPages />
+                </>
+            ),
+        });
+    };
+
+    const renderToolbar = (Toolbar: (props: ToolbarProps) => React.ReactElement) => (
+        <Toolbar>{renderDefaultToolbar(transform)}</Toolbar>
+    );
+
+    const defaultLayoutPluginInstance = defaultLayoutPlugin({
+        sidebarTabs: (defaultTabs) => [],
+        renderToolbar,
+    });
+    const { renderDefaultToolbar } = defaultLayoutPluginInstance.toolbarPluginInstance;
+    const toolbarPluginInstance = toolbarPlugin();
     const pageNavigationPluginInstance = pageNavigationPlugin({
         enableShortcuts: true,
     });
-    const [canShowBadTerms, setCanShowBadTerms] = useState<CanShowBadTerms>({  documentLoaded: false, badTermsLoaded: false });
+    const [canShowBadTerms, setCanShowBadTerms] = useState<CanShowBadTerms>({ documentLoaded: false, badTermsLoaded: false });
 
     const [highlightAreas, setHighlightAreas] = React.useState<HighlightArea[]>([]);
     const [notes, setNotes] = React.useState<Note[]>([]);
@@ -72,19 +108,6 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
             let allNewHighlightAreas: HighlightArea[] = [];
             let notes: Note[] = [];
 
-            // for (let i = 0; i < BadTerms.length; i++) {
-            //     const badTerm = BadTerms[i];
-
-            //     const newHighlightAreas = HighlightTermSearched(badTerm);
-            //     allNewHighlightAreas = [...allNewHighlightAreas, ...newHighlightAreas];
-                
-            //     notes = [...notes, {
-            //         id: i + 1,
-            //         content: `Cláusula abusiva: ${i + 1}`,
-            //         highlightAreas: [ newHighlightAreas[0] ],
-            //         quote: badTerm.substring(0, 200),
-            //     }];
-            // }
             for (let i = 0; i < badTerms.length; i++) {
                 const badTerm = badTerms[i].description;
 
@@ -95,12 +118,12 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
                 }
 
                 allNewHighlightAreas = [...allNewHighlightAreas, ...newHighlightAreas];
-                
+
                 notes = [...notes, {
                     id: i + 1,
-                    content: `Cláusula abusiva: ${i + 1}`,
-                    highlightAreas: [ newHighlightAreas[0] ],
-                    quote: badTerm.substring(0, 200),
+                    interpretation: badTerms[i].interpretation.replace('===', ''),
+                    highlightAreas: [newHighlightAreas[0]],
+                    description: `${badTerm.substring(0, 500)}${badTerm.length > 500 ? '...' : ''}`,
                 }];
             }
 
@@ -110,7 +133,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
 
             setHighlightAreas(allNewHighlightAreas);
             setNotes(notes);
-        }, 3000);
+        }, 4000);
     }, [canShowBadTerms]);
 
     const onDocumentLoad = () => {
@@ -144,7 +167,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
                 <div style={{ flex: '1 1 0', overflow: 'auto', }}>
                     <Viewer
                         fileUrl={fileUrl}
-                        plugins={[defaultLayoutPluginInstance, highlightPluginInstance, pageNavigationPluginInstance]}
+                        plugins={[defaultLayoutPluginInstance, highlightPluginInstance, pageNavigationPluginInstance, toolbarPluginInstance]}
                         defaultScale={SpecialZoomLevel.PageFit}
                         localization={de_ES as unknown as LocalizationMap}
                         onDocumentLoad={onDocumentLoad}
@@ -154,11 +177,17 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
                     {notes.length === 0 && <div style={{ textAlign: 'center' }}>Tras analizar el contrato, no se hallaron cláusulas abusivas; todas las disposiciones están en conformidad con las normativas vigentes.</div>}
                     {notes.map((note) => {
                         return (
-                            <div key={note.id} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', cursor: 'pointer', padding: '8px', }} onClick={() => jumpToHighlightArea(note.highlightAreas[0])}>
+                            <div key={note.id} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', cursor: 'pointer', padding: '8px', }}
+                                onClick={() => jumpToHighlightArea({
+                                    ...note.highlightAreas[0],
+                                    top: note.highlightAreas[0].top - 0.8,
+                                })}
+                            >
                                 <blockquote style={{ borderLeft: '2px solid rgba(0, 0, 0, 0.2)', fontSize: '.75rem', lineHeight: 1.5, margin: '0 0 8px 0', paddingLeft: '8px', textAlign: 'justify', }}>
-                                    {note.quote}
+                                    {note.description}
                                 </blockquote>
-                                {note.content}
+                                <span style={{ color: 'red' }}>¿Por qué esta cláusula puede perjudicarte?:</span>
+                                {note.interpretation}
                             </div>
                         );
                     })}

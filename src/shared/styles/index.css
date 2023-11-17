@@ -32,3 +32,7 @@ code {
 .form-group .MuiButton-root {
   margin-top: 15px;
 }
+
+.rpv-toolbar__right > div:last-child {
+  display: none;
+}
