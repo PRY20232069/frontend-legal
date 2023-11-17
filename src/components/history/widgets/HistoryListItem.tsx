@@ -6,10 +6,11 @@ import IconButton from '@mui/material/IconButton';
 import markSvg from '../../../assets/svgs/mark.svg';
 import markOutlinedSvg from '../../../assets/svgs/mark_outlined.svg';
 import styled from '@emotion/styled';
+import { ContractResource } from '../../../resources/responses/ContractResource';
 
 type Props = {
-    data: IDocument;
-    onUpdate: (data: IDocument) => void;
+    data: ContractResource;
+    onUpdate: (data: ContractResource) => void;
 };
 
 const ListItemContainer = styled('li')(({ theme }) => ({
@@ -35,7 +36,7 @@ const ListItemLink = (props:any) => {
 
 export const HistoryListItem: React.FC<Props> = ({ data, onUpdate }) => {
     const updateData = useCallback(() => {
-        const updatedData = { ...data, favorite: !data.favorite } as IDocument;
+        const updatedData: ContractResource = { ...data, favorite: !data.favorite };
         onUpdate(updatedData);
     }, [data, onUpdate]);
 
@@ -48,9 +49,9 @@ export const HistoryListItem: React.FC<Props> = ({ data, onUpdate }) => {
     return (
         <ListItemContainer>
             <ListItemLink to="/document-analyzer">
-                <div style={{ flex: 3 }}>{data.title}</div>
-                <div style={{ flex: 1 }}>{data.uploaded_date}</div>
-                <div style={{ flex: 2 }}>Cantidad de observaciones: {data.num_observations}</div>
+                <div style={{ flex: 3 }}>{data.name}</div>
+                <div style={{ flex: 1 }}>{data.uploaded_date.toString()}</div>
+                <div style={{ flex: 2 }}>Cantidad de observaciones: 5 {/*data.num_observations*/}</div>
                 <div style={{ width: 46 }}>
                     <IconButton color="primary" onClick={handleClick}>
                         <img src={data.favorite ? markSvg : markOutlinedSvg} alt={data.favorite ? "⭐" : "~"} width={'20px'} />

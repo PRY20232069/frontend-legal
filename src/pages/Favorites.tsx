@@ -1,6 +1,4 @@
-import { useState, useCallback } from "react";
-import { IDocument } from "../interfaces/IHistory";
-import { filterItemsByStringAndBoolean } from "../shared/utils/search-utils";
+import { useState, useCallback, useEffect } from "react";
 import { SearchBar } from "../components/shared/widgets/SearchBar";
 import { HistoryListItem } from "../components/history/widgets/HistoryListItem";
 import { PageContainer } from "../components/shared/layout/PageContainer";
@@ -8,18 +6,43 @@ import { PageTitle } from "../components/shared/widgets/PageTitle";
 import { PageSubtitle } from "../components/shared/widgets/PageSubtitle";
 import { FiltersBar } from "../components/shared/layout/FiltersBar";
 import { HistoryListContainer } from "../components/history/layout/HistoryListContainer";
-
-import historyExamplesData from '../shared/utils/mock/history_examples.json';
+import { ContractsApiService } from "../services/ContractsApiService";
 import { HistoryListHeader } from "../components/history/widgets/HistoryListHeader";
+import { ContractResource } from "../resources/responses/ContractResource";
+import { filterItemsByStringAndBoolean } from "../shared/utils/search-utils";
+
+const getAllContracts = async (): Promise<any> => {
+  try {
+    const contractResources: ContractResource[] = await ContractsApiService.getAllContracts();
+    return contractResources;
+  } catch (error) {
+    console.error('Error during file upload', error);
+  }
+};
 
 export const Favorites = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [historyItems, setHistoryItems] = useState(historyExamplesData as IDocument[]);
+  const [contractItems, setContractItems] = useState<ContractResource[]>([]);
+  const [filteredItems, setFilteredItems] = useState<ContractResource[]>([]);
 
-  const filteredItems = filterItemsByStringAndBoolean(historyItems, 'title', searchTerm, 'favorite');
+  useEffect(() => {
+    const fetchContracts = async () => {
+      const contractResources = await getAllContracts();
+      const filtered = filterItemsByStringAndBoolean(contractResources, 'name', searchTerm, 'favorite');
+      setContractItems(filtered);
+      setFilteredItems(filtered);
+    };
 
-  const onHistoryItemUpdate = useCallback((updatedData: IDocument) => {
-    setHistoryItems(prevItems => {
+    fetchContracts();
+  }, []);
+
+  useEffect(() => {
+    const filtered = filterItemsByStringAndBoolean(contractItems, 'name', searchTerm, 'favorite');
+    setFilteredItems(filtered);
+  }, [searchTerm]);
+
+  const onHistoryItemUpdate = useCallback((updatedData: ContractResource) => {
+    setContractItems(prevItems => {
       const updatedItems = [...prevItems];
       const index = updatedItems.findIndex(item => item.id === updatedData.id);
       updatedItems[index] = updatedData;
@@ -38,9 +61,12 @@ export const Favorites = () => {
 
       <HistoryListContainer>
         <HistoryListHeader />
-        {filteredItems.map((item, index) => (
-          <HistoryListItem key={index} data={item} onUpdate={onHistoryItemUpdate} />
-        ))}
+        {filteredItems.length > 0 ?
+          filteredItems.map((item, index) => (
+            <HistoryListItem key={index} data={item} onUpdate={onHistoryItemUpdate} />
+          )) :
+          <p style={{ marginLeft: 15 }}>No hay contratos favoritos</p>
+        }
       </HistoryListContainer>
     </PageContainer>
   );

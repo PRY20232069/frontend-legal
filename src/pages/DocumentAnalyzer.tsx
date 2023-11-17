@@ -39,7 +39,7 @@ export const DocumentAnalyzer = () => {
             {contract ? (
                 contract.file_url ?
                     (<PDFViewer fileUrl={contract.file_url} />) :
-                    (<p>Algo salió mal. Por favor vuelva a insertar su contrato. Lamentamos el inconveniente :C</p>)
+                    (<p>Algo salió mal. Por favor vuelva a subir su contrato. Lamentamos el inconveniente :C</p>)
             ) : (
                 <p>Loading...</p>
             )}
