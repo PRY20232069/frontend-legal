@@ -17,16 +17,23 @@ import de_ES from '@react-pdf-viewer/locales/lib/es_ES.json';
 // Page Navigation
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
 import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // PDF Utils
-import { HighlightTermSearched, getAllTextForEachPage } from '../../../shared/utils/pdf-utils';
+import { HighlightTermSearched } from '../../../shared/utils/pdf-utils';
 import { BadTerms } from '../saving';
 import { HighlightsRenderer } from './HighlightRenderer';
 import React from 'react';
+import { TermResource } from '../../../resources/responses/TermResource';
 
 interface PDFViewerProps {
     fileUrl: string;
+    badTerms: TermResource[];
+}
+
+interface CanShowBadTerms {
+    documentLoaded: boolean;
+    badTermsLoaded: boolean;
 }
 
 interface Note {
@@ -36,31 +43,57 @@ interface Note {
     quote: string;
 }
 
-export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl }) => {
+export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pageNavigationPluginInstance = pageNavigationPlugin({
         enableShortcuts: true,
     });
+    const [canShowBadTerms, setCanShowBadTerms] = useState<CanShowBadTerms>({  documentLoaded: false, badTermsLoaded: false });
 
     const [highlightAreas, setHighlightAreas] = React.useState<HighlightArea[]>([]);
-
     const [notes, setNotes] = React.useState<Note[]>([]);
     const noteEles: Map<number, HTMLElement> = new Map();
 
-    const onDocumentLoad = () => {
+    useEffect(() => {
+        setCanShowBadTerms({
+            ...canShowBadTerms,
+            badTermsLoaded: true,
+        });
+    }, [badTerms]);
 
-        // setTimeout(() => {
-        //     getAllTextForEachPage();
-        // }, 1000);
+    useEffect(() => {
+        console.log('canShowBadTerms');
+        console.log(canShowBadTerms);
+        if (!canShowBadTerms.documentLoaded || !canShowBadTerms.badTermsLoaded) {
+            return;
+        }
 
         setTimeout(() => {
             let allNewHighlightAreas: HighlightArea[] = [];
             let notes: Note[] = [];
 
-            for (let i = 0; i < BadTerms.length; i++) {
-                const badTerm = BadTerms[i];
+            // for (let i = 0; i < BadTerms.length; i++) {
+            //     const badTerm = BadTerms[i];
 
-                const newHighlightAreas = HighlightTermSearched(badTerm);
+            //     const newHighlightAreas = HighlightTermSearched(badTerm);
+            //     allNewHighlightAreas = [...allNewHighlightAreas, ...newHighlightAreas];
+                
+            //     notes = [...notes, {
+            //         id: i + 1,
+            //         content: `Cláusula abusiva: ${i + 1}`,
+            //         highlightAreas: [ newHighlightAreas[0] ],
+            //         quote: badTerm.substring(0, 200),
+            //     }];
+            // }
+            for (let i = 0; i < badTerms.length; i++) {
+                const badTerm = badTerms[i].description;
+
+                const newHighlightAreas = HighlightTermSearched(badTerm, i);
+
+                if (newHighlightAreas.length === 0) {
+                    continue;
+                }
+
                 allNewHighlightAreas = [...allNewHighlightAreas, ...newHighlightAreas];
                 
                 notes = [...notes, {
@@ -71,9 +104,20 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl }) => {
                 }];
             }
 
+            if (allNewHighlightAreas.length === 0) {
+                console.log('No se encontraron cláusulas abusivas para resaltar');
+            }
+
             setHighlightAreas(allNewHighlightAreas);
             setNotes(notes);
         }, 3000);
+    }, [canShowBadTerms]);
+
+    const onDocumentLoad = () => {
+        setCanShowBadTerms({
+            ...canShowBadTerms,
+            documentLoaded: true,
+        });
     };
 
     const jumpToNote = (note: Note) => {

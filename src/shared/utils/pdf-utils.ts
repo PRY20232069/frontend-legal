@@ -1,32 +1,8 @@
 import { HighlightArea } from "@react-pdf-viewer/highlight";
 
-export const getAllTextForEachPage = () => {
-    const divs = document.getElementsByClassName("rpv-core__inner-page-container");
-
-    for (let i = 0; i < divs.length; i++) {
-        let text = "";
-        const selectedDiv = divs[i];
-
-        // encontrar divs dentro del selectedDiv con la clase rpv-core__text-layer. Ese div debe estar dentro del selectedDiv
-        const textLayerDiv = selectedDiv.getElementsByClassName("rpv-core__text-layer")[0];
-
-        if (textLayerDiv === undefined) continue;
-        // encontrar spans dentro del textLayerDiv con las clase rpv-core__text-layer-text. Filtra los elementos por tipo span y clase rpv-core__text-layer-text
-        const spans = textLayerDiv.querySelectorAll("span.rpv-core__text-layer-text");
-
-        for (let j = 0; j < spans.length; j++) {
-            const span = spans[j];
-            // const text = span.textContent;
-
-            text += span.textContent;
-        }
-        // console.log(text);
-    }
-};
-
-export const HighlightTermSearched = (BadTerm: string): HighlightArea[] => {
+export const HighlightTermSearched = (BadTerm: string, highlightTermSearchedIndex: number): HighlightArea[] => {
     const spans = document.querySelectorAll("span.rpv-core__text-layer-text");
-    const badTermWords = BadTerm.split(' ');
+    const badTermWords = (BadTerm.normalize('NFKD') + ".").replace('\n', ' ').trim().split(/\s+/);
 
     for (let spanIndex = 0; spanIndex < spans.length; spanIndex++) {
         const span = spans[spanIndex] as HTMLElement;
@@ -34,7 +10,7 @@ export const HighlightTermSearched = (BadTerm: string): HighlightArea[] => {
 
         if (text === undefined || text === null || text === '') continue;
 
-        let textWords = text.split(' ');
+        let textWords = text.normalize('NFKD').split(' ');
 
         if (badTermWords[0] === textWords[0]) {
             let badTermWordIndex = 0, matchingSpanIndex = spanIndex;
@@ -46,12 +22,19 @@ export const HighlightTermSearched = (BadTerm: string): HighlightArea[] => {
                 const matchingSpan = spans[matchingSpanIndex] as HTMLElement;
                 const matchingText = matchingSpan.textContent?.trim();
                 if (matchingText === undefined || matchingText === null || matchingText === '') { matchingSpanIndex++; continue; }
-                textWords = matchingText.split(' ');
+                textWords = matchingText.normalize('NFKD').split(' ');
 
                 while (badTermWordIndex < badTermWords.length && matchingWordIndex < textWords.length) {
                     if (badTermWords[badTermWordIndex] !== textWords[matchingWordIndex]) {
                         mismatched = true;
                         break;
+
+                        // if (badTermWordIndex === badTermWords.length - 1) { // if it's the last word in the bad term
+                        //     mismatched = false;
+                        // }
+                        // else {
+                        //     break;
+                        // }
                     }
 
                     badTermWordIndex++;
@@ -75,7 +58,7 @@ export const HighlightTermSearched = (BadTerm: string): HighlightArea[] => {
 
                     let transform = window.getComputedStyle(currentSpan).transform;
                     let scaleX = (!transform || transform === 'none') ? 1 : Number(transform.split('(')[1].split(',')[0]);
-                    
+
                     let width = currentSpan.offsetWidth * scaleX;
 
                     const parentWidth = currentSpan.parentElement!.offsetWidth;
@@ -98,6 +81,31 @@ export const HighlightTermSearched = (BadTerm: string): HighlightArea[] => {
             }
         }
     }
-    console.log('FIN');
+    console.log(`NO SE PUDO RESALTAR LA CLAUSULA ${highlightTermSearchedIndex}`);
     return [];
 }
+
+
+// export const getAllTextForEachPage = () => {
+//     const divs = document.getElementsByClassName("rpv-core__inner-page-container");
+
+//     for (let i = 0; i < divs.length; i++) {
+//         let text = "";
+//         const selectedDiv = divs[i];
+
+//         // encontrar divs dentro del selectedDiv con la clase rpv-core__text-layer. Ese div debe estar dentro del selectedDiv
+//         const textLayerDiv = selectedDiv.getElementsByClassName("rpv-core__text-layer")[0];
+
+//         if (textLayerDiv === undefined) continue;
+//         // encontrar spans dentro del textLayerDiv con las clase rpv-core__text-layer-text. Filtra los elementos por tipo span y clase rpv-core__text-layer-text
+//         const spans = textLayerDiv.querySelectorAll("span.rpv-core__text-layer-text");
+
+//         for (let j = 0; j < spans.length; j++) {
+//             const span = spans[j];
+//             // const text = span.textContent;
+
+//             text += span.textContent;
+//         }
+//         // console.log(text);
+//     }
+// };

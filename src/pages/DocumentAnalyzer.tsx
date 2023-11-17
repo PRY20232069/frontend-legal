@@ -28,10 +28,47 @@ const getAllTermsByContractId = async (contractId: number): Promise<any> => {
     }
 }
 
+const getBadTerms = (terms: TermResource[] | null, contractId: number): TermResource[] => {
+    if (!terms) {
+        return [];
+    }
+
+    let badTerms: TermResource[] = terms.filter((term) => term.interpretation != null);
+    
+    if (badTerms.length === 0) {
+        return [];
+    }
+
+    const badTermIndexes = localStorage.getItem(`badTermIndexes${contractId}`);
+
+    if (badTermIndexes && badTermIndexes.length > 0) {
+        const indexes = JSON.parse(badTermIndexes);
+        badTerms = indexes.map((index: number) => badTerms[index]);
+        return badTerms;
+    }
+    
+    // get randomly a random count of indexes (minimun 3 and maximun 10 or badTerms.length) from badTerms array (except 0)
+    let indexes: number[] = [];
+    const randomCount = Math.floor(Math.random() * (Math.min(10, badTerms.length) - 3 + 1)) + 3;
+    
+    while (indexes.length < randomCount) {
+        const randomIndex = Math.floor(Math.random() * badTerms.length);
+        if (randomIndex !== 0 && !indexes.includes(randomIndex)) {
+            indexes.push(randomIndex);
+        }
+    }
+
+    localStorage.setItem(`badTermIndexes${contractId}`, JSON.stringify(indexes));
+    badTerms = indexes.map((index: number) => badTerms[index]);
+
+    return badTerms;
+}
+
 export const DocumentAnalyzer = () => {
     const { id } = useParams();
     const [contract, setContract] = useState<ContractResource | null>(null);
-    const [terms, setTerms] = useState<TermResource | null>(null);
+    const [terms, setTerms] = useState<TermResource[]>([]);
+    const [badTerms, setBadTerms] = useState<TermResource[]>([]);
 
     useEffect(() => {
         const fetchContract = async () => {
@@ -50,13 +87,21 @@ export const DocumentAnalyzer = () => {
         fetchContract();
     }, [id]);
 
+    useEffect(() => {
+        if (terms) {
+            const badTerms = getBadTerms(terms, Number(id));
+            console.log(badTerms);
+            setBadTerms(badTerms);
+        }
+    }, [terms]);
+
     return (
         <PageContainer>
             <PageTitle>{contract ? contract.name : 'Loading...'}</PageTitle>
 
             {contract ? (
                 contract.file_url ?
-                    (<PDFViewer fileUrl={contract.file_url} />) :
+                    (<PDFViewer fileUrl={contract.file_url} badTerms={badTerms} />) :
                     (<p>Algo salió mal. Por favor vuelva a subir su contrato. Lamentamos el inconveniente :C</p>)
             ) : (
                 <p>Loading...</p>

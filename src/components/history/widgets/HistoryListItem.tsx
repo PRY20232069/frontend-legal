@@ -62,12 +62,20 @@ export const HistoryListItem: React.FC<Props> = ({ data, onUpdate }) => {
         markContractAsFavorite(data);
     }
 
+    const formattedDate = (_date: Date) => {
+        const date = new Date(_date);
+        const day = date.getDate().toString().padStart(2, '0'); // Asegura que el día siempre tenga dos dígitos
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript empiezan en 0, por lo que debes sumar 1
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
     // Rest of your component
     return (
         <ListItemContainer>
             <ListItemLink to={`/document-analyzer/${data.id}`}>
                 <div style={{ flex: 3 }}>{data.name}</div>
-                <div style={{ flex: 1 }}>{data.uploaded_date.toString()}</div>
+                <div style={{ flex: 1 }}>{formattedDate(data.uploaded_date)}</div>
                 <div style={{ flex: 2 }}>Cantidad de observaciones: 5 {/*data.num_observations*/}</div>
                 <div style={{ width: 46 }}>
                     <IconButton color="primary" onClick={handleClick}>

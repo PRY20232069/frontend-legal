@@ -11,9 +11,7 @@ const ProtectedRoutes = () => {
   }, []);
 
   return (
-    <div>
-      <Outlet />
-    </div>
+    <Outlet />
   );
 };
 
