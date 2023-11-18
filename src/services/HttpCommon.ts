@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class api {
-    static baseUrl = 'http://localhost:8000/api/v1';
+    static baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     static post(url: string, data: any): Promise<any> {
         const token = localStorage.getItem('token');

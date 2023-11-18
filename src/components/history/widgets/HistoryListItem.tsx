@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { IDocument } from '../../../interfaces/IHistory';
 import { useNavigate } from "react-router-dom";
 import { ListItemButton } from '@mui/material';
 import IconButton from '@mui/material/IconButton';

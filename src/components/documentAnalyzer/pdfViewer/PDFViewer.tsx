@@ -26,7 +26,6 @@ import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf
 
 // PDF Utils
 import { HighlightTermSearched } from '../../../shared/utils/pdf-utils';
-import { BadTerms } from '../saving';
 import { HighlightsRenderer } from './HighlightRenderer';
 import React from 'react';
 import { TermResource } from '../../../resources/responses/TermResource';

@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from "react";
-import { IDocument } from "../interfaces/IHistory";
 import { filterItemsByString } from "../shared/utils/search-utils";
 import { SearchBar } from "../components/shared/widgets/SearchBar";
 import { HistoryListItem } from "../components/history/widgets/HistoryListItem";

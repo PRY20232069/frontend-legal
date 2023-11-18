@@ -67,7 +67,6 @@ const getBadTerms = (terms: TermResource[] | null, contractId: number): TermReso
 export const DocumentAnalyzer = () => {
     const { id } = useParams();
     const [contract, setContract] = useState<ContractResource | null>(null);
-    const [terms, setTerms] = useState<TermResource[]>([]);
     const [badTerms, setBadTerms] = useState<TermResource[]>([]);
 
     useEffect(() => {
@@ -78,22 +77,19 @@ export const DocumentAnalyzer = () => {
 
                 if (contractData) {
                     const termsData = await getAllTermsByContractId(contractData.id);
-                    setTerms(termsData);
                     console.log(termsData);
+
+                    if (termsData) {
+                        const badTerms = getBadTerms(termsData, Number(id));
+                        console.log(badTerms);
+                        setBadTerms(badTerms);
+                    }
                 }
             }
         };
 
         fetchContract();
     }, [id]);
-
-    useEffect(() => {
-        if (terms) {
-            const badTerms = getBadTerms(terms, Number(id));
-            console.log(badTerms);
-            setBadTerms(badTerms);
-        }
-    }, [terms]);
 
     return (
         <PageContainer>
