@@ -1,13 +1,11 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { filterItemsByString } from "../shared/utils/search-utils";
 import { SearchBar } from "../components/shared/widgets/SearchBar";
-import { HistoryListItem } from "../components/history/widgets/HistoryListItem";
 import { PageContainer } from "../components/shared/layout/PageContainer";
 import { PageTitle } from "../components/shared/widgets/PageTitle";
 import { PageSubtitle } from "../components/shared/widgets/PageSubtitle";
 import { FiltersBar } from "../components/shared/layout/FiltersBar";
 import { HistoryListContainer } from "../components/history/layout/HistoryListContainer";
-import { HistoryListHeader } from "../components/history/widgets/HistoryListHeader";
 import { BanksApiService } from "../services/BanksApiService";
 import { BankResource } from "../resources/responses/BankResource";
 import { RankingListItem } from "../components/ranking/widgets/RankingListItem";
@@ -28,13 +26,13 @@ export const Ranking = () => {
   const [filteredItems, setFilteredItems] = useState<BankResource[]>([]);
 
   useEffect(() => {
-    const fetchContracts = async () => {
+    const fetchBanks = async () => {
       const bankResources = await getAllBanks();
       setBankItems(bankResources);
       setFilteredItems(bankResources);
     };
 
-    fetchContracts();
+    fetchBanks();
   }, []);
 
   useEffect(() => {

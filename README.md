@@ -62,3 +62,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 
 For React PDF Viewer see: https://react-pdf-viewer.dev/docs/basic-usage/
+For Charts see: https://codesandbox.io/s/github/tannerlinsley/react-charts/tree/beta/examples/simple?file=/src/index.tsx:1562-1573
