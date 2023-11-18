@@ -21,7 +21,7 @@ interface UploadContractBtnProps {
 export const UploadContractBtn: React.FC<UploadContractBtnProps> = ({ onFileChange }) => {
   return (
     <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-      Upload file
+      Subir contrato
       <VisuallyHiddenInput type="file" accept="application/pdf" onChange={onFileChange} />
     </Button>
   );
