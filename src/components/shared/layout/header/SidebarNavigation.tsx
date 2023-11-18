@@ -72,18 +72,19 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
     },
   ];
 
-
   useEffect(() => {
     const currentPath = location.pathname;
-  
+
     const reversedIconos = [...iconos].reverse();
-    const selectedIndex = reversedIconos.findIndex(icono => currentPath.includes(icono.link));
-    
+    const selectedIndex = reversedIconos.findIndex((icono) =>
+      currentPath.includes(icono.link)
+    );
+
     if (selectedIndex !== -1) {
       const originalIndex = iconos.length - 1 - selectedIndex;
       props.setSelectedPage(originalIndex);
     }
-  }, []);
+  }, [location.pathname]);
 
   return (
     <Drawer variant="permanent" open={props.open}>

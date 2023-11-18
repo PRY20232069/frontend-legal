@@ -112,6 +112,7 @@ export const SignUp = () => {
       const existingProfile = await getProfile();
       if (existingProfile && existingProfile.id) {
         navigate("/");
+        window.location.reload();
         return;
       }
 
@@ -121,6 +122,7 @@ export const SignUp = () => {
       }
 
       navigate("/"); // ideal scenario
+      window.location.reload();
     }
   };
 

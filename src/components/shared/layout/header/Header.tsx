@@ -7,6 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SidebarNavigation from "./SidebarNavigation";
 import { AppBar } from "../../Material";
 import { AccountCircle } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,12 @@ const Header = () => {
       setTokenExist(true);
     }
   }, []);
+
+  const logoutIcon = () => {
+    localStorage.removeItem("token");
+    navigate("/sign-in");
+    window.location.reload();
+  };
 
   return (
     <>
@@ -51,6 +58,18 @@ const Header = () => {
               color="inherit"
             >
               <AccountCircle />
+            </IconButton>
+          )}
+          {tokenExist && (
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={logoutIcon}
+              color="inherit"
+            >
+              <LogoutIcon />
             </IconButton>
           )}
 
