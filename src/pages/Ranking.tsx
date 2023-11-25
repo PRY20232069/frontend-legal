@@ -28,8 +28,8 @@ export const Ranking = () => {
   useEffect(() => {
     const fetchBanks = async () => {
       const bankResources = await getAllBanks();
-      setBankItems(bankResources);
-      setFilteredItems(bankResources);
+      setBankItems(bankResources || []);
+      setFilteredItems(bankResources || []);
     };
 
     fetchBanks();
@@ -56,7 +56,7 @@ export const Ranking = () => {
             filteredItems.map((item, index) => (
               <RankingListItem key={index} data={item} />
             )) :
-            <p style={{ marginLeft: 15 }}>Cargando bancos...</p>
+            <p style={{ marginLeft: 15 }}>No se han encontrado bancos</p>
         )
         }
       </HistoryListContainer>

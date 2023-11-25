@@ -24,7 +24,7 @@ export const RecentContractsList = () => {
     useEffect(() => {
         const fetchContracts = async () => {
             const contractResources = await getAllContracts();
-            setContractItems(contractResources);
+            setContractItems(contractResources || []);
         };
 
         fetchContracts();

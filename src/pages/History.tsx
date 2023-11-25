@@ -28,8 +28,8 @@ export const History = () => {
   useEffect(() => {
     const fetchContracts = async () => {
       const contractResources = await getAllContracts();
-      setContractItems(contractResources);
-      setFilteredItems(contractResources);
+      setContractItems(contractResources || []);
+      setFilteredItems(contractResources || []);
     };
 
     fetchContracts();

@@ -29,8 +29,8 @@ export const Favorites = () => {
     const fetchContracts = async () => {
       const contractResources = await getAllContracts();
       const filtered = filterItemsByStringAndBoolean(contractResources, 'name', searchTerm, 'favorite');
-      setContractItems(filtered);
-      setFilteredItems(filtered);
+      setContractItems(filtered || []);
+      setFilteredItems(filtered || []);
     };
 
     fetchContracts();

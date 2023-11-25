@@ -9,8 +9,6 @@ import { ContractsByBankChart } from "../components/home/widgets/ContractsByBank
 
 export const Home = () => {
 
-
-
   return (
     <PageContainer>
       <PageTitle>Inicio</PageTitle>
