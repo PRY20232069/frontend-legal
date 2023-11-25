@@ -15,6 +15,7 @@ import { PageContainer } from "../components/shared/layout/PageContainer";
 import { PageTitle } from "../components/shared/widgets/PageTitle";
 import { BankResource } from "../resources/responses/BankResource";
 import { BanksApiService } from "../services/BanksApiService";
+import { TermResource } from "../resources/responses/TermResource";
 
 const uploadContract = async (
   name: string,
@@ -39,11 +40,23 @@ const uploadContract = async (
       throw new Error("File url is not defined");
     }
 
-    const termResources =
+    const termsWithInterpretationResources: TermResource[] =
       await ContractsApiService.generateTermsInterpretationByContractId(
         contractWithUrlResource.id
       );
-    console.log(termResources);
+      if (!termsWithInterpretationResources || termsWithInterpretationResources.length === 0 || !termsWithInterpretationResources[0].interpretation) {
+        console.error("Error during file upload: terms do not have interpretation");
+      }
+
+    const termsWithConsumerProtectionLawResources: TermResource[] =
+      await ContractsApiService.matchTermsWithConsumerProtectionLawsByContractId(
+        contractWithUrlResource.id
+      );
+      if (!termsWithConsumerProtectionLawResources || termsWithConsumerProtectionLawResources.length === 0 || !termsWithConsumerProtectionLawResources[0].consumer_protection_law) {
+        console.error("Error during file upload: terms do not have consumer protection law");
+      }
+
+    console.log(termsWithConsumerProtectionLawResources);
 
     return contractWithUrlResource;
   } catch (error) {

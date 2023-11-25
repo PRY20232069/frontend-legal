@@ -19,6 +19,10 @@ export class ContractsApiService {
         return api.put(`${this.baseUrl}/${contractId}/termsinterpretations`, null);
     }
 
+    static matchTermsWithConsumerProtectionLawsByContractId(contractId: number) {
+        return api.put(`${this.baseUrl}/${contractId}/termsconsumerprotectionlaws`, null);
+    }
+
     // static deleteContract(contractId: number) {
     //     return api.delete(`${this.baseUrl}/${contractId}`);
     // }

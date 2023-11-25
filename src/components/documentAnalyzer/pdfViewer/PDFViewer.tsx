@@ -29,6 +29,7 @@ import { HighlightTermSearched } from '../../../shared/utils/pdf-utils';
 import { HighlightsRenderer } from './HighlightRenderer';
 import React from 'react';
 import { TermResource } from '../../../resources/responses/TermResource';
+import { HighlightNote } from './HighlightNote';
 
 interface PDFViewerProps {
     fileUrl: string;
@@ -43,6 +44,7 @@ interface CanShowBadTerms {
 interface Note {
     id: number;
     interpretation: string;
+    consumer_protection_law: string;
     highlightAreas: HighlightArea[];
     description: string;
 }
@@ -123,6 +125,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
                     interpretation: badTerms[i].interpretation.replace('===', ''),
                     highlightAreas: [newHighlightAreas[0]],
                     description: `${badTerm.substring(0, 500)}${badTerm.length > 500 ? '...' : ''}`,
+                    consumer_protection_law: badTerms[i].consumer_protection_law,
                 }];
             }
 
@@ -176,18 +179,25 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
                     {notes.length === 0 && <div style={{ textAlign: 'center' }}>Tras analizar el contrato, no se hallaron cláusulas abusivas; todas las disposiciones están en conformidad con las normativas vigentes.</div>}
                     {notes.map((note) => {
                         return (
-                            <div key={note.id} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', cursor: 'pointer', padding: '8px', }}
-                                onClick={() => jumpToHighlightArea({
-                                    ...note.highlightAreas[0],
-                                    top: note.highlightAreas[0].top - 0.8,
-                                })}
-                            >
-                                <blockquote style={{ borderLeft: '2px solid rgba(0, 0, 0, 0.2)', fontSize: '.75rem', lineHeight: 1.5, margin: '0 0 8px 0', paddingLeft: '8px', textAlign: 'justify', }}>
-                                    {note.description}
-                                </blockquote>
-                                <span style={{ color: 'red' }}>¿Por qué esta cláusula puede perjudicarte?:</span>
-                                {note.interpretation}
-                            </div>
+                            // <div key={note.id} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', cursor: 'pointer', padding: '8px', }}
+                            //     onClick={() => jumpToHighlightArea({
+                            //         ...note.highlightAreas[0],
+                            //         top: note.highlightAreas[0].top - 0.8,
+                            //     })}
+                            // >
+                            //     <blockquote style={{ borderLeft: '2px solid rgba(0, 0, 0, 0.2)', fontSize: '.75rem', lineHeight: 1.5, margin: '0 0 8px 0', paddingLeft: '8px', textAlign: 'justify', }}>
+                            //         {note.description}
+                            //     </blockquote>
+                            //     <div>
+                            //         <span style={{ color: 'red' }}>¿Por qué esta cláusula puede perjudicarte?:</span>
+                            //         {note.interpretation}
+                            //     </div>
+                            //     <div>
+                            //         <span style={{ color: 'red' }}>Ley de protección al consumidor:</span>
+                            //         {note.consumer_protection_law}
+                            //     </div>
+                            // </div>
+                            <HighlightNote note={note} jumpToHighlightArea={jumpToHighlightArea} />
                         );
                     })}
                 </div>
