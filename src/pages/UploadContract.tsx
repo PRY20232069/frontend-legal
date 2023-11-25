@@ -84,7 +84,7 @@ export const UploadContract = () => {
   useEffect(() => {
     const fetchBanks = async () => {
       const bankResources = await getAllBanks();
-      setBanks(bankResources);
+      setBanks(bankResources || []);
     };
 
     fetchBanks();
