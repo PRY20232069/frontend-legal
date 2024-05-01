@@ -15,6 +15,9 @@ import {
   Typography,
 } from "@mui/material";
 import { DrawerHeader } from "../components/shared/Material";
+import Logo from "../assets/svgs/logo.svg";
+import { CustomTextField } from "../components/shared/widgets/Mui/Input";
+import { CustomButton } from "../components/shared/widgets/Mui/Button";
 
 const loginUser = async (email: string, password: string): Promise<any> => {
   try {
@@ -146,11 +149,14 @@ export const SignIn = () => {
         }}
       >
         <form className="login-form" onSubmit={handleSubmit}>
-          <h3>Iniciar Sesión</h3>
+          <img src={Logo} />
 
           <div className="form-group">
-            <TextField
-              label="Email address"
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Correo
+            </Typography>
+            <CustomTextField
+              placeholder="user@mail.com"
               type="email"
               variant="outlined"
               fullWidth
@@ -162,8 +168,11 @@ export const SignIn = () => {
             <FormHelperText error>{emailError}</FormHelperText>
           </div>
           <div className="form-group">
-            <TextField
-              label="Password"
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Contraseña
+            </Typography>
+            <CustomTextField
+              placeholder="Contraseña"
               type="password"
               variant="outlined"
               fullWidth
@@ -174,24 +183,37 @@ export const SignIn = () => {
             />
             <FormHelperText error>{passwordError}</FormHelperText>
           </div>
-          {/* <div className="mb-3">
-        <FormControlLabel
-          control={<Checkbox />}
-          label="Recuérdame"
-        />
-      </div> */}
           <div className="form-group">
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Iniciar Sesión
-            </Button>
+            <CustomButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+            >
+              Ingresar
+            </CustomButton>
           </div>
-          <div className="form-group" style={{ textAlign: "center" }}>
-            <Link to="/sign-up">
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                Aún no te encuentras registrado?
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              borderRadius: 1,
+              justifyContent: "center",
+            }}
+          >
+            <Typography variant="body1" color="#668D84" sx={{ mr: 1 }}>
+              ¿Aún no tienes una cuenta?
+            </Typography>
+            <Link to="/sign-up" className="link">
+              <Typography
+                variant="body1"
+                color="primary"
+                sx={{ textDecoration: "none" }}
+              >
+                Regístrate
               </Typography>
             </Link>
-          </div>
+          </Box>
         </form>
       </Grid2>
     </Box>

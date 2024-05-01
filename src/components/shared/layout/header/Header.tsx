@@ -31,9 +31,9 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          {tokenExist && (
+      {tokenExist && (
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
             <IconButton
               size="large"
               edge="start"
@@ -44,11 +44,9 @@ const Header = () => {
             >
               <MenuIcon />
             </IconButton>
-          )}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            LegalGuardAI
-          </Typography>
-          {tokenExist && (
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              LegalGuardAI
+            </Typography>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -59,8 +57,6 @@ const Header = () => {
             >
               <AccountCircle />
             </IconButton>
-          )}
-          {tokenExist && (
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -71,11 +67,9 @@ const Header = () => {
             >
               <LogoutIcon />
             </IconButton>
-          )}
-
-          {/* <Button color="inherit">Login</Button> */}
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+        </AppBar>
+      )}
       {tokenExist && (
         <SidebarNavigation
           open={open}
