@@ -7,17 +7,12 @@ import { SaveProfileResource } from "../resources/requests/SaveProfileResource";
 import { ProfileResource } from "../resources/responses/ProfileResource";
 import { ProfilesApiService } from "../services/ProfilesApiService";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import {
-  Button,
-  TextField,
-  FormHelperText,
-  Box,
-  Typography,
-} from "@mui/material";
+import { FormHelperText, Box, Typography } from "@mui/material";
 import { DrawerHeader } from "../components/shared/Material";
 import Logo from "../assets/svgs/logo.svg";
 import { CustomTextField } from "../components/shared/widgets/Mui/Input";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
+import Footer from "../components/shared/layout/footer/Footer";
 
 const loginUser = async (email: string, password: string): Promise<any> => {
   try {
@@ -130,92 +125,95 @@ export const SignIn = () => {
   };
 
   return (
-    <Box
-      component="main"
-      sx={{
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <DrawerHeader />
-      <Grid2
-        container
+    <>
+      <Box
+        component="main"
         sx={{
           width: "100%",
-          height: "80vh",
-          display: "flex",
-          alignContent: "center",
-          justifyContent: "center",
+          height: "95vh",
         }}
       >
-        <form className="login-form" onSubmit={handleSubmit}>
-          <img src={Logo} />
+        <DrawerHeader />
+        <Grid2
+          container
+          sx={{
+            width: "100%",
+            height: "80vh",
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <form className="login-form" onSubmit={handleSubmit}>
+            <img src={Logo} />
 
-          <div className="form-group">
-            <Typography color="primary" sx={{ mt: 2 }}>
-              Correo
-            </Typography>
-            <CustomTextField
-              placeholder="user@mail.com"
-              type="email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={email}
-              onChange={handleEmailChange}
-              error={!!emailError}
-            />
-            <FormHelperText error>{emailError}</FormHelperText>
-          </div>
-          <div className="form-group">
-            <Typography color="primary" sx={{ mt: 2 }}>
-              Contraseña
-            </Typography>
-            <CustomTextField
-              placeholder="Contraseña"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={password}
-              onChange={handlePasswordChange}
-              error={!!passwordError}
-            />
-            <FormHelperText error>{passwordError}</FormHelperText>
-          </div>
-          <div className="form-group">
-            <CustomButton
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              Ingresar
-            </CustomButton>
-          </div>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              borderRadius: 1,
-              justifyContent: "center",
-            }}
-          >
-            <Typography variant="body1" color="#668D84" sx={{ mr: 1 }}>
-              ¿Aún no tienes una cuenta?
-            </Typography>
-            <Link to="/sign-up" className="link">
-              <Typography
-                variant="body1"
-                color="primary"
-                sx={{ textDecoration: "none" }}
-              >
-                Regístrate
+            <div className="form-group">
+              <Typography color="primary" sx={{ mt: 2 }}>
+                Correo
               </Typography>
-            </Link>
-          </Box>
-        </form>
-      </Grid2>
-    </Box>
+              <CustomTextField
+                placeholder="user@mail.com"
+                type="email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={email}
+                onChange={handleEmailChange}
+                error={!!emailError}
+              />
+              <FormHelperText error>{emailError}</FormHelperText>
+            </div>
+            <div className="form-group">
+              <Typography color="primary" sx={{ mt: 2 }}>
+                Contraseña
+              </Typography>
+              <CustomTextField
+                placeholder="Contraseña"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={handlePasswordChange}
+                error={!!passwordError}
+              />
+              <FormHelperText error>{passwordError}</FormHelperText>
+            </div>
+            <div className="form-group">
+              <CustomButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Ingresar
+              </CustomButton>
+            </div>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                borderRadius: 1,
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="body1" color="#668D84" sx={{ mr: 1 }}>
+                ¿Aún no tienes una cuenta?
+              </Typography>
+              <Link to="/sign-up" className="link">
+                <Typography
+                  variant="body1"
+                  color="primary"
+                  sx={{ textDecoration: "none", fontWeight: 600 }}
+                >
+                  Regístrate
+                </Typography>
+              </Link>
+            </Box>
+          </form>
+        </Grid2>
+      </Box>
+      <Footer />
+    </>
   );
 };

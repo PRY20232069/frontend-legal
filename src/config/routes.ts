@@ -57,6 +57,16 @@ const routes: IRoute[] = [
     name: "Profile",
     component: Pages.Profile,
   },
+  {
+    path: "/terms",
+    name: "Terms",
+    component: Pages.Profile,
+  },
+  {
+    path: "/privacy",
+    name: "Privacy",
+    component: Pages.Profile,
+  },
 ];
 
 export default routes;
