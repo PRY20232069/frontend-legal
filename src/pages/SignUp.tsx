@@ -8,13 +8,11 @@ import { ProfileResource } from "../resources/responses/ProfileResource";
 import { ProfilesApiService } from "../services/ProfilesApiService";
 import { DrawerHeader } from "../components/shared/Material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import {
-  Button,
-  TextField,
-  FormHelperText,
-  Box,
-  Typography,
-} from "@mui/material";
+import { FormHelperText, Box, Typography } from "@mui/material";
+import Logo from "../assets/svgs/logo.svg";
+import { CustomButton } from "../components/shared/widgets/Mui/Button";
+import { CustomTextField } from "../components/shared/widgets/Mui/Input";
+import Footer from "../components/shared/layout/footer/Footer";
 
 const registerUser = async (email: string, password: string): Promise<any> => {
   try {
@@ -127,66 +125,81 @@ export const SignUp = () => {
   };
 
   return (
-    <Box
-      component="main"
-      sx={{
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <DrawerHeader />
-      <Grid2
-        container
+    <>
+      <Box
+        component="main"
         sx={{
           width: "100%",
-          height: "80vh",
-          display: "flex",
-          alignContent: "center",
-          justifyContent: "center",
+          height: "95vh",
         }}
       >
-        <form className="login-form" onSubmit={handleSubmit}>
-          <h3>Registrarse</h3>
-          <div className="form-group">
-            <TextField
-              label="Email address"
-              type="email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={email}
-              onChange={handleEmailChange}
-              error={!!emailError}
-            />
-            <FormHelperText error>{emailError}</FormHelperText>
-          </div>
-          <div className="form-group">
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={password}
-              onChange={handlePasswordChange}
-              error={!!passwordError}
-            />
-            <FormHelperText error>{passwordError}</FormHelperText>
-          </div>
-          <div className="form-group">
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Registrarse
-            </Button>
-          </div>
-          <div className="form-group" style={{ textAlign: "center" }}>
-            <Link to="/sign-in">
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                Ya tienes una cuenta?
-              </Typography>
-            </Link>
-          </div>
-        </form>
-      </Grid2>
-    </Box>
+        <DrawerHeader />
+        <Grid2
+          container
+          sx={{
+            width: "100%",
+            height: "80vh",
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <form className="login-form" onSubmit={handleSubmit}>
+            <img src={Logo} />
+
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Correo
+            </Typography>
+            <div className="form-group">
+              <CustomTextField
+                placeholder="user@mail.com"
+                type="email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={email}
+                onChange={handleEmailChange}
+                error={!!emailError}
+              />
+              <FormHelperText error>{emailError}</FormHelperText>
+            </div>
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Contraseña
+            </Typography>
+            <div className="form-group">
+              <CustomTextField
+                placeholder="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={handlePasswordChange}
+                error={!!passwordError}
+              />
+              <FormHelperText error>{passwordError}</FormHelperText>
+            </div>
+            <div className="form-group">
+              <CustomButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Registrarse
+              </CustomButton>
+            </div>
+            <div className="form-group" style={{ textAlign: "center" }}>
+              <Link to="/sign-in" style={{ textDecoration: "none" }}>
+                <Typography variant="body1" color="#668D84" sx={{ mb: 2 }}>
+                  ¿Ya tienes una cuenta?
+                </Typography>
+              </Link>
+            </div>
+          </form>
+        </Grid2>
+      </Box>
+      <Footer />
+    </>
   );
 };
