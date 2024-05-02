@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import Modal from "@mui/material/Modal";
 
 interface data {
@@ -6,18 +7,24 @@ interface data {
 
 const LoadingComponent = (props: data) => {
   return (
-    <Modal open={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+    <Modal
+      open={true}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
       <div
-        className="text-center"
         style={{
+          textAlign: "center",
           position: "relative",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
         }}
       >
-        <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-        <span className="sr-only">Loading...</span>
+        <CircularProgress color="secondary" />
+        <div className="sr-only" style={{ color: "#fff", fontWeight: "bold" }}>
+          Cargando...
+        </div>
         {props.text && <p className="text-center mt-3">{props.text}</p>}
       </div>
     </Modal>

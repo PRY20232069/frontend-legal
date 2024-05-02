@@ -13,6 +13,9 @@ import Logo from "../assets/svgs/logo.svg";
 import { CustomTextField } from "../components/shared/widgets/Mui/Input";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
 import Footer from "../components/shared/layout/footer/Footer";
+import LoadingComponent from "../components/shared/widgets/LoadingComponent";
+import toast, { Toaster } from "react-hot-toast";
+import ToastDisplay from "../components/shared/widgets/ToastDisplay";
 
 const loginUser = async (email: string, password: string): Promise<any> => {
   try {
@@ -62,6 +65,7 @@ export const SignIn = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,20 +94,37 @@ export const SignIn = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     let error = false;
+    setLoading(true);
+
     if (!email) {
+      toast.error(
+        <ToastDisplay title="No has ingresado el correo" message="" />
+      );
       setEmailError("El email es obligatorio");
+      setLoading(false);
       error = true;
     }
-    if (!password) {
+    if (!password || password.length < 8) {
+      toast.error(
+        <ToastDisplay
+          title="La contraseña debe tener mínimo 8 caracteres"
+          message=""
+        />
+      );
       setPasswordError("La contraseña es obligatoria");
+      setLoading(false);
       error = true;
     }
 
     if (!emailError && !passwordError && !error) {
       const userResource = await loginUser(email, password);
+
       if (!userResource || !userResource.token) {
+        toast.error(
+          <ToastDisplay title="Credenciales incorrectas" message="" />
+        );
+        setLoading(false);
         return; // something was wrong
       }
 
@@ -116,9 +137,11 @@ export const SignIn = () => {
 
       const profileResource = await registerProfile();
       if (!profileResource || !profileResource.id) {
+        setLoading(false);
         return; // something was wrong in registration
       }
 
+      setLoading(false);
       navigate("/");
       window.location.reload();
     }
@@ -189,7 +212,7 @@ export const SignIn = () => {
                 Ingresar
               </CustomButton>
             </div>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -209,11 +232,31 @@ export const SignIn = () => {
                   Regístrate
                 </Typography>
               </Link>
+            </Box> */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                borderRadius: 1,
+                justifyContent: "center",
+              }}
+            >
+              <Link to="/sign-up" className="link">
+                <Typography
+                  variant="body1"
+                  color="#668D84"
+                  sx={{ textDecoration: "none" }}
+                >
+                  ¿Aún no te encuentras registrado?
+                </Typography>
+              </Link>
             </Box>
           </form>
         </Grid2>
       </Box>
       <Footer />
+      {loading && <LoadingComponent />}
+      <Toaster />
     </>
   );
 };

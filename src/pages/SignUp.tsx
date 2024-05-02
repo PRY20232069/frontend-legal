@@ -13,6 +13,9 @@ import Logo from "../assets/svgs/logo.svg";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
 import { CustomTextField } from "../components/shared/widgets/Mui/Input";
 import Footer from "../components/shared/layout/footer/Footer";
+import LoadingComponent from "../components/shared/widgets/LoadingComponent";
+import toast, { Toaster } from "react-hot-toast";
+import ToastDisplay from "../components/shared/widgets/ToastDisplay";
 
 const registerUser = async (email: string, password: string): Promise<any> => {
   try {
@@ -62,6 +65,7 @@ export const SignUp = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,20 +94,30 @@ export const SignUp = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     let error = false;
+    setLoading(true);
+
     if (!email) {
-      setEmailError("El email es obligatorio");
+      toast.error(
+        <ToastDisplay title="No has ingresado el correo" message="" />
+      );
+      setEmailError("El correo es obligatorio");
+      setLoading(false);
       error = true;
     }
     if (!password) {
+      toast.error(
+        <ToastDisplay title="No has ingresado la contraseña" message="" />
+      );
       setPasswordError("La contraseña es obligatoria");
+      setLoading(false);
       error = true;
     }
 
     if (!emailError && !passwordError && !error) {
       const userResource = await registerUser(email, password);
       if (!userResource || !userResource.id || !userResource.token) {
+        setLoading(false);
         return; // something was wrong
       }
 
@@ -116,9 +130,11 @@ export const SignUp = () => {
 
       const profileResource = await registerProfile();
       if (!profileResource || !profileResource.id) {
+        setLoading(false);
         return; // something was wrong
       }
 
+      setLoading(false);
       navigate("/"); // ideal scenario
       window.location.reload();
     }
@@ -200,6 +216,8 @@ export const SignUp = () => {
         </Grid2>
       </Box>
       <Footer />
+      {loading && <LoadingComponent />}
+      <Toaster />
     </>
   );
 };
