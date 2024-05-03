@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UsersApiService } from "../services/UsersApiService";
 import { SaveUserResource } from "../resources/requests/SaveUserResource";
@@ -16,6 +16,7 @@ import Footer from "../components/shared/layout/footer/Footer";
 import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../components/shared/widgets/ToastDisplay";
+import RecoverPassword from "../components/signIn/RecoverPassword";
 
 const loginUser = async (email: string, password: string): Promise<any> => {
   try {
@@ -66,6 +67,8 @@ export const SignIn = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openPasswordModal, setOpenPasswordModal] = useState(false);
+  const [emailSended, setEmailSended] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,6 +149,16 @@ export const SignIn = () => {
       window.location.reload();
     }
   };
+
+  useEffect(() => {
+    if (!openPasswordModal) {
+      if (emailSended) {
+        console.log("se cerró!");
+        toast.success(<ToastDisplay title="Correo enviado" message="" />);
+        setEmailSended(false);
+      }
+    }
+  }, [openPasswordModal]);
 
   return (
     <>
@@ -239,6 +252,26 @@ export const SignIn = () => {
                 flexDirection: "row",
                 borderRadius: 1,
                 justifyContent: "center",
+                mb: 1,
+              }}
+            >
+              <Typography
+                variant="body1"
+                color="#668D84"
+                sx={{ textDecoration: "none", cursor: "pointer" }}
+                onClick={() => {
+                  setOpenPasswordModal(true);
+                }}
+              >
+                ¿Olvidaste tu contraseña?
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                borderRadius: 1,
+                justifyContent: "center",
               }}
             >
               <Link to="/sign-up" className="link">
@@ -257,6 +290,14 @@ export const SignIn = () => {
       <Footer />
       {loading && <LoadingComponent />}
       <Toaster />
+      <RecoverPassword
+        open={openPasswordModal}
+        setOpen={setOpenPasswordModal}
+        email={email}
+        handleEmailChange={handleEmailChange}
+        emailError={emailError}
+        setEmailSended={setEmailSended}
+      />
     </>
   );
 };
