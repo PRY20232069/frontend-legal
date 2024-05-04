@@ -1,4 +1,4 @@
-interface IPersonalInformation {
+export interface IPersonalInformation {
   id: number;
   name: String;
   lastName: String;
@@ -8,14 +8,14 @@ interface IPersonalInformation {
   document: number;
 }
 
-interface IPlan {
+export interface IPlan {
   planId: number;
   planName: String;
   description: String;
   limit: number;
 }
 
-interface IMembership {
+export interface IMembership {
   plan: IPlan;
   usage: number;
 }

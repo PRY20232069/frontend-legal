@@ -12,7 +12,6 @@ import { DrawerHeader } from "../components/shared/Material";
 import Logo from "../assets/svgs/logo.svg";
 import { CustomTextField } from "../components/shared/widgets/Mui/Input";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
-import Footer from "../components/shared/layout/footer/Footer";
 import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../components/shared/widgets/ToastDisplay";

@@ -11,8 +11,8 @@
   "membership": {
     "plan": {
       "planId": 0,
-      "planName": "basic",
-      "description": "bla bla bla",
+      "planName": "Básico",
+      "description": "Este plan te permite analizar documentos de hasta 5 páginas",
       "limit": 3
     },
     "usage": 1
@@ -20,20 +20,20 @@
   "plans": [
     {
       "planId": 0,
-      "planName": "Basic",
-      "description": "Este plan te permite analizar documentos de hasta 20 páginas",
+      "planName": "Básico",
+      "description": "Este plan te permite analizar documentos de hasta 5 páginas",
       "limit": 3
     },
     {
       "planId": 1,
       "planName": "Medium",
-      "description": "Este plan te permite analizar documentos de hasta 25 páginas",
+      "description": "Este plan te permite analizar documentos de hasta 10 páginas",
       "limit": 5
     },
     {
       "planId": 2,
       "planName": "Genius",
-      "description": "Este plan te permite analizar documentos de hasta 40 páginas",
+      "description": "Este plan te permite analizar documentos de hasta 20 páginas",
       "limit": 8
     }
   ]

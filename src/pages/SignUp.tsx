@@ -12,7 +12,6 @@ import { FormHelperText, Box, Typography } from "@mui/material";
 import Logo from "../assets/svgs/logo.svg";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
 import { CustomTextField } from "../components/shared/widgets/Mui/Input";
-import Footer from "../components/shared/layout/footer/Footer";
 import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../components/shared/widgets/ToastDisplay";

@@ -107,7 +107,7 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
       <List>
         {iconos.map((element, index) => (
           <React.Fragment key={index}>
-            <ListItem>
+            <ListItem disablePadding={props.isSmallScreen}>
               <ListItemButton
                 sx={{
                   backgroundColor: selectedPage === index ? "#E1F9F7" : "",
