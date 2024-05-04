@@ -287,7 +287,6 @@ export const SignIn = () => {
           </form>
         </Grid2>
       </Box>
-      <Footer />
       {loading && <LoadingComponent />}
       <Toaster />
       <RecoverPassword

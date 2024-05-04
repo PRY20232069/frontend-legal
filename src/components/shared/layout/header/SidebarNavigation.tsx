@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import HomeIcon from "@mui/icons-material/Home";
-import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
-import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import UploadIcon from "@mui/icons-material/Upload";
+import HistoryIcon from "@mui/icons-material/History";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { IconDrawer } from "../../../../interfaces/IIconDrawer";
 import { useTheme } from "@mui/material/styles";
 import {
+  Box,
   Divider,
   IconButton,
   List,
@@ -17,26 +16,27 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
 } from "@mui/material";
 import { Drawer, DrawerHeader } from "../../Material";
 import { useLocation } from "react-router-dom";
+import { AccountCircle } from "@mui/icons-material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import Logo from "../../../../assets/svgs/logo.svg";
 
 interface ISidebarNavigation {
   open: boolean;
   setOpen: (state: boolean) => void;
-  selectedPage: number;
-  setSelectedPage: (state: number) => void;
-  mobileOpen: boolean;
-  setMobileOpen: (state: boolean) => void;
+  isSmallScreen: boolean;
 }
 
 const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
+  const [selectedPage, setSelectedPage] = useState<number>(-1);
   const navigate = useNavigate();
   const location = useLocation();
-  const theme = useTheme();
 
   const handleLink = (url: string, n: number) => {
-    props.setSelectedPage(n);
+    setSelectedPage(n);
     navigate(url);
   };
 
@@ -47,28 +47,33 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
   const iconos: IconDrawer[] = [
     {
       text: "Inicio",
-      icon: <HomeIcon />,
+      icon: <HomeIcon color="primary" />,
       link: "/",
     },
     {
-      text: "Analizar documento",
-      icon: <TroubleshootIcon />,
+      text: "Subir contrato",
+      icon: <UploadIcon color="primary" />,
       link: "/upload-contract",
     },
     {
       text: "Historial",
-      icon: <WorkHistoryIcon />,
+      icon: <HistoryIcon color="primary" />,
       link: "/history",
     },
     {
       text: "Favoritos",
-      icon: <FavoriteIcon />,
+      icon: <StarOutlineIcon color="primary" />,
       link: "/favorites",
     },
     {
       text: "Ranking",
-      icon: <BarChartIcon />,
+      icon: <BarChartIcon color="primary" />,
       link: "/ranking",
+    },
+    {
+      text: "Mi perfil",
+      icon: <AccountCircle color="primary" />,
+      link: "/profile",
     },
   ];
 
@@ -82,35 +87,40 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
 
     if (selectedIndex !== -1) {
       const originalIndex = iconos.length - 1 - selectedIndex;
-      props.setSelectedPage(originalIndex);
+      setSelectedPage(originalIndex);
     }
   }, [location.pathname]);
 
   return (
     <Drawer variant="permanent" open={props.open}>
-      <DrawerHeader>
-        <IconButton onClick={handleDrawer}>
-          {theme.direction === "rtl" ? (
-            <ChevronRightIcon />
-          ) : (
-            <ChevronLeftIcon />
+      <Paper elevation={0}>
+        <DrawerHeader sx={{ justifyContent: "center" }}>
+          <img src={Logo} width={150} />
+          {props.isSmallScreen && (
+            <IconButton onClick={handleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
           )}
-        </IconButton>
-      </DrawerHeader>
-
+        </DrawerHeader>
+      </Paper>
       <Divider />
       <List>
         {iconos.map((element, index) => (
           <React.Fragment key={index}>
-            <ListItem disablePadding>
+            <ListItem>
               <ListItemButton
                 sx={{
-                  backgroundColor: props.selectedPage === index ? "grey" : "",
+                  backgroundColor: selectedPage === index ? "#E1F9F7" : "",
                 }}
-                onClick={() => handleLink(element.link, index)}
+                onClick={() => {
+                  handleLink(element.link, index);
+                }}
               >
                 <ListItemIcon>{element.icon}</ListItemIcon>
-                <ListItemText primary={element.text} />
+                <ListItemText
+                  primary={element.text}
+                  sx={{ color: "#193A32" }}
+                />
               </ListItemButton>
             </ListItem>
 

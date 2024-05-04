@@ -10,6 +10,7 @@ import ProtectedRoutes from "./components/shared/layout/ProtectedRoutes";
 import { ThemeProvider, createTheme } from "@mui/material";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Footer from "./components/shared/layout/footer/Footer";
 
 const theme = createTheme({
   palette: {
@@ -32,7 +33,7 @@ const App: React.FC<{}> = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Box>
+        <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Header />
           <Routes>
@@ -53,6 +54,7 @@ const App: React.FC<{}> = () => {
             </Route>
           </Routes>
         </Box>
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   );

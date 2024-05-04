@@ -215,7 +215,6 @@ export const SignUp = () => {
           </form>
         </Grid2>
       </Box>
-      <Footer />
       {loading && <LoadingComponent />}
       <Toaster />
     </>
