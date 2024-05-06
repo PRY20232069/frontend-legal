@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import { PageContainer } from "../components/shared/layout/PageContainer";
 import { PageTitle } from "../components/shared/widgets/PageTitle";
@@ -19,6 +20,9 @@ import { TermResource } from "../resources/responses/TermResource";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../components/shared/widgets/ToastDisplay";
 import LoadingComponent from "../components/shared/widgets/LoadingComponent";
+import DragAndDrop from "../components/documentAnalyzer/DragAndDrop";
+import "../shared/styles/dropzone.css";
+import { CustomButton } from "../components/shared/widgets/Mui/Button";
 
 const uploadContract = async (
   name: string,
@@ -118,9 +122,10 @@ export const UploadContract = () => {
     fetchBanks();
   }, []);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    let error = false;
+  const handleFileChange = (file: File) => {
+    // const file = event.target.files ? event.target.files[0] : null;
+
+    console.log(file);
 
     setSelectedFile(file);
     if (file) {
@@ -146,6 +151,7 @@ export const UploadContract = () => {
           message=""
         />
       );
+      setBankErrorMessage("Selecciona un banco antes de continuar");
       setLoading(false);
     }
 
@@ -158,11 +164,13 @@ export const UploadContract = () => {
             message=""
           />
         );
+        setFileErrorMessage("El formato seleccionado debe ser un PDF");
         setLoading(false);
       }, 2000);
     }
 
     if (!error) {
+      setFileErrorMessage("");
       setBankErrorMessage("");
       const contractResource = await uploadContract(
         selectedFile!.name,
@@ -180,13 +188,22 @@ export const UploadContract = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Subir Contrato</PageTitle>
+      {/* <PageTitle>Subir Contratos</PageTitle> */}
+      <Typography
+        variant="h5"
+        color="#193A32"
+        sx={{ mb: 2, fontWeight: "bold" }}
+      >
+        Subir contratos
+      </Typography>
       <div style={{ marginTop: "15px" }}>
-        <UploadContractBtn onFileChange={handleFileChange} />
+        <DragAndDrop onFileChange={handleFileChange} />
         {showAnalyzeButton && (
           <div style={{ marginTop: "20px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <b>Archivo seleccionado:</b>
+            <div>
+              <Typography variant="body1" color="#193A32" sx={{ mt: 3, mb: 1 }}>
+                Archivo seleccionado
+              </Typography>
               <TextField
                 value={selectedFile?.name || ""}
                 InputProps={{ readOnly: true }}
@@ -197,15 +214,10 @@ export const UploadContract = () => {
             {fileErrorMessage && (
               <div style={{ color: "red" }}>{fileErrorMessage}</div>
             )}
-            <div
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              <b>Banco que redactó el contrato:</b>
+            <div>
+              <Typography variant="body1" color="#193A32" sx={{ mt: 3, mb: 1 }}>
+                Selecione el banco que redactó el contrato
+              </Typography>
               <Select
                 value={selectedBank}
                 onChange={(e) => setSelectedBank(e.target.value)}
@@ -224,12 +236,15 @@ export const UploadContract = () => {
             {bankErrorMessage && (
               <div style={{ color: "red" }}>{bankErrorMessage}</div>
             )}
-            <Button variant="contained" onClick={handleAnalyzeClick}>
+            <CustomButton
+              variant="contained"
+              onClick={handleAnalyzeClick}
+              fullWidth
+              sx={{ mt: 3, width: "50%" }}
+            >
               Analizar
-            </Button>
-            <div style={{ marginTop: "25px" }}>
-              {loading && <LoadingComponent />}
-            </div>
+            </CustomButton>
+            {loading && <LoadingComponent />}
           </div>
         )}
       </div>
