@@ -16,6 +16,9 @@ import { PageTitle } from "../components/shared/widgets/PageTitle";
 import { BankResource } from "../resources/responses/BankResource";
 import { BanksApiService } from "../services/BanksApiService";
 import { TermResource } from "../resources/responses/TermResource";
+import toast, { Toaster } from "react-hot-toast";
+import ToastDisplay from "../components/shared/widgets/ToastDisplay";
+import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 
 const uploadContract = async (
   name: string,
@@ -44,17 +47,29 @@ const uploadContract = async (
       await ContractsApiService.generateTermsInterpretationByContractId(
         contractWithUrlResource.id
       );
-      if (!termsWithInterpretationResources || termsWithInterpretationResources.length === 0 || !termsWithInterpretationResources[0].interpretation) {
-        console.error("Error during file upload: terms do not have interpretation");
-      }
+    if (
+      !termsWithInterpretationResources ||
+      termsWithInterpretationResources.length === 0 ||
+      !termsWithInterpretationResources[0].interpretation
+    ) {
+      console.error(
+        "Error during file upload: terms do not have interpretation"
+      );
+    }
 
     const termsWithConsumerProtectionLawResources: TermResource[] =
       await ContractsApiService.matchTermsWithConsumerProtectionLawsByContractId(
         contractWithUrlResource.id
       );
-      if (!termsWithConsumerProtectionLawResources || termsWithConsumerProtectionLawResources.length === 0 || !termsWithConsumerProtectionLawResources[0].consumer_protection_law) {
-        console.error("Error during file upload: terms do not have consumer protection law");
-      }
+    if (
+      !termsWithConsumerProtectionLawResources ||
+      termsWithConsumerProtectionLawResources.length === 0 ||
+      !termsWithConsumerProtectionLawResources[0].consumer_protection_law
+    ) {
+      console.error(
+        "Error during file upload: terms do not have consumer protection law"
+      );
+    }
 
     console.log(termsWithConsumerProtectionLawResources);
 
@@ -105,6 +120,8 @@ export const UploadContract = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
+    let error = false;
+
     setSelectedFile(file);
     if (file) {
       setShowAnalyzeButton(true);
@@ -112,29 +129,52 @@ export const UploadContract = () => {
   };
 
   const handleAnalyzeClick = async () => {
+    let error = false;
+    setLoading(true);
+
     if (!selectedFile) {
-      setFileErrorMessage("Por favor, selecciona un archivo.");
-      return;
+      error = true;
+      <ToastDisplay title="Selecciona un documento" message="" />;
+      setLoading(false);
     }
-    setFileErrorMessage("");
 
     if (selectedBank === "selectopt") {
-      setBankErrorMessage("Por favor, selecciona un banco.");
-      return;
+      error = true;
+      toast.error(
+        <ToastDisplay
+          title="Selecciona un banco antes de continuar"
+          message=""
+        />
+      );
+      setLoading(false);
     }
-    setBankErrorMessage("");
 
-    setLoading(true);
-    const contractResource = await uploadContract(
-      selectedFile.name,
-      selectedFile,
-      Number(selectedBank)
-    );
-    setLoading(false);
+    if (selectedFile!.type !== "application/pdf") {
+      error = true;
+      setTimeout(() => {
+        toast.error(
+          <ToastDisplay
+            title="Documento con formato incorrecto, seleccione un PDF"
+            message=""
+          />
+        );
+        setLoading(false);
+      }, 2000);
+    }
 
-    console.log(contractResource);
-    if (contractResource && contractResource.id) {
-      navigate(`/document-analyzer/${contractResource.id}`);
+    if (!error) {
+      setBankErrorMessage("");
+      const contractResource = await uploadContract(
+        selectedFile!.name,
+        selectedFile,
+        Number(selectedBank)
+      );
+      setLoading(false);
+
+      console.log(contractResource);
+      if (contractResource && contractResource.id) {
+        navigate(`/document-analyzer/${contractResource.id}`);
+      }
     }
   };
 
@@ -188,11 +228,12 @@ export const UploadContract = () => {
               Analizar
             </Button>
             <div style={{ marginTop: "25px" }}>
-              {loading && <CircularProgress />}
+              {loading && <LoadingComponent />}
             </div>
           </div>
         )}
       </div>
+      <Toaster />
     </PageContainer>
   );
 };
