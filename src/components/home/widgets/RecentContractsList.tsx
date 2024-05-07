@@ -1,10 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ContractResource } from "../../../resources/responses/ContractResource";
 import { ContractsApiService } from "../../../services/ContractsApiService";
 import { RecentContractsListContainer } from "../layout/RecentContractsListContainer";
 import { RecentContractItem } from "./RecentContractItem";
 import { SectionTitle } from "./SectionTitle";
 import { Typography } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 const getAllContracts = async (): Promise<any> => {
   try {
@@ -54,13 +63,35 @@ export const RecentContractsList = () => {
       <RecentContractsListContainer>
         {contractItems &&
           (contractItems.length > 0 ? (
-            contractItems.map((item, index) => (
-              <RecentContractItem
-                key={index}
-                data={item}
-                onUpdate={onHistoryItemUpdate}
-              />
-            ))
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead sx={{ backgroundColor: "#FCFCFC" }}>
+                  <TableRow>
+                    <TableCell sx={{ color: "#0D2B23", fontWeight: "bold" }}>
+                      Nombre del contrato
+                    </TableCell>
+                    <TableCell sx={{ color: "#0D2B23", fontWeight: "bold" }}>
+                      Fecha
+                    </TableCell>
+                    <TableCell sx={{ color: "#0D2B23", fontWeight: "bold" }}>
+                      Observaciones
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {contractItems.map((item, index) => (
+                    <React.Fragment>
+                      <RecentContractItem
+                        key={index}
+                        data={item}
+                        onUpdate={onHistoryItemUpdate}
+                      />
+                    </React.Fragment>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           ) : (
             <p style={{ marginLeft: 15 }}>
               No se han subido contratos recientemente
