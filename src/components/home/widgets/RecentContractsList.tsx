@@ -3,7 +3,6 @@ import { ContractResource } from "../../../resources/responses/ContractResource"
 import { ContractsApiService } from "../../../services/ContractsApiService";
 import { RecentContractsListContainer } from "../layout/RecentContractsListContainer";
 import { RecentContractItem } from "./RecentContractItem";
-import { SectionTitle } from "./SectionTitle";
 import { Typography } from "@mui/material";
 import {
   Paper,
@@ -14,6 +13,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
+import ToastDisplay from "../../shared/widgets/ToastDisplay";
 
 const getAllContracts = async (): Promise<any> => {
   try {
@@ -39,6 +40,14 @@ export const RecentContractsList = () => {
     const fetchContracts = async () => {
       const contractResources = await getAllContracts();
       setContractItems(contractResources || []);
+      if (contractResources === undefined) {
+        toast.error(
+          <ToastDisplay
+            title="Error. Los contratos no lograron cargarse correctamente"
+            message=""
+          />
+        );
+      }
     };
 
     fetchContracts();
@@ -98,6 +107,7 @@ export const RecentContractsList = () => {
             </p>
           ))}
       </RecentContractsListContainer>
+      <Toaster />
     </div>
   );
 };
