@@ -10,40 +10,58 @@ import { HistoryListContainer } from "../components/history/layout/HistoryListCo
 import { HistoryListHeader } from "../components/history/widgets/HistoryListHeader";
 import { ContractResource } from "../resources/responses/ContractResource";
 import { ContractsApiService } from "../services/ContractsApiService";
+import Typography from "@mui/material/Typography";
+import toast, { Toaster } from "react-hot-toast";
+import ToastDisplay from "../components/shared/widgets/ToastDisplay";
+import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 
 const getAllContracts = async (): Promise<any> => {
   try {
-    const contractResources: ContractResource[] = await ContractsApiService.getAllContracts();
+    const contractResources: ContractResource[] =
+      await ContractsApiService.getAllContracts();
     return contractResources;
   } catch (error) {
-    console.error('Error during file upload', error);
+    console.error("Error during file upload", error);
   }
 };
 
 export const History = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [contractItems, setContractItems] = useState<ContractResource[]>([]);
   const [filteredItems, setFilteredItems] = useState<ContractResource[]>([]);
+  const [loading, setLoading] = useState(false);
 
+  const fetchContracts = async () => {
+    setLoading(true);
+    const contractResources = await getAllContracts();
+    setContractItems(contractResources || []);
+    setFilteredItems(contractResources || []);
+
+    if (contractResources === undefined) {
+      toast.error(
+        <ToastDisplay
+          title="Error en el servidor, intenta nuevamente"
+          message=""
+        />
+      );
+    }
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchContracts = async () => {
-      const contractResources = await getAllContracts();
-      setContractItems(contractResources || []);
-      setFilteredItems(contractResources || []);
-    };
-
     fetchContracts();
   }, []);
 
   useEffect(() => {
-    const filtered = filterItemsByString(contractItems, 'name', searchTerm);
+    const filtered = filterItemsByString(contractItems, "name", searchTerm);
     setFilteredItems(filtered);
   }, [contractItems, searchTerm]);
 
   const onHistoryItemUpdate = useCallback((updatedData: ContractResource) => {
-    setContractItems(prevItems => {
+    setContractItems((prevItems) => {
       const updatedItems = [...prevItems];
-      const index = updatedItems.findIndex(item => item.id === updatedData.id);
+      const index = updatedItems.findIndex(
+        (item) => item.id === updatedData.id
+      );
       updatedItems[index] = updatedData;
       return updatedItems;
     });
@@ -52,23 +70,38 @@ export const History = () => {
   return (
     <PageContainer>
       <PageTitle>Historial</PageTitle>
-      <PageSubtitle>Explora y gestiona todos tus contratos analizados</PageSubtitle>
-
+      <PageSubtitle>
+        Explora, visualizar y gestiona todos tus contratos analizados.
+      </PageSubtitle>
       <FiltersBar>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </FiltersBar>
 
       <HistoryListContainer>
         <HistoryListHeader />
-        {filteredItems && (
-          filteredItems.length > 0 ?
-            filteredItems.map((item, index) => (
-              <HistoryListItem key={index} data={item} onUpdate={onHistoryItemUpdate} />
-            )) :
-            <p style={{ marginLeft: 15 }}>No hay contratos en el historial</p>
-        )
-        }
+        {!loading ? (
+          <>
+            {filteredItems &&
+              (filteredItems.length > 0 ? (
+                filteredItems.map((item, index) => (
+                  <HistoryListItem
+                    key={index}
+                    data={item}
+                    onUpdate={onHistoryItemUpdate}
+                  />
+                ))
+              ) : (
+                <p style={{ marginLeft: 15, textAlign: "center" }}>
+                  No se encontraron contratos en el historial
+                </p>
+              ))}{" "}
+          </>
+        ) : (
+          <></>
+        )}
       </HistoryListContainer>
+      <Toaster />
+      {loading && <LoadingComponent />}
     </PageContainer>
   );
 };
