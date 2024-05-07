@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import HomeIcon from "@mui/icons-material/Home";
-import UploadIcon from "@mui/icons-material/Upload";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import HistoryIcon from "@mui/icons-material/History";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { IconDrawer } from "../../../../interfaces/IIconDrawer";
 import { useTheme } from "@mui/material/styles";
 import {
-  Box,
   Divider,
   IconButton,
   List,
@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { Drawer, DrawerHeader } from "../../Material";
 import { useLocation } from "react-router-dom";
-import { AccountCircle } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Logo from "../../../../assets/svgs/logo.svg";
 
@@ -47,12 +46,12 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
   const iconos: IconDrawer[] = [
     {
       text: "Inicio",
-      icon: <HomeIcon color="primary" />,
+      icon: <HomeOutlinedIcon color="primary" />,
       link: "/",
     },
     {
       text: "Subir contrato",
-      icon: <UploadIcon color="primary" />,
+      icon: <FileUploadOutlinedIcon color="primary" />,
       link: "/upload-contract",
     },
     {
@@ -72,7 +71,7 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
     },
     {
       text: "Mi perfil",
-      icon: <AccountCircle color="primary" />,
+      icon: <AccountCircleOutlinedIcon color="primary" />,
       link: "/profile",
     },
   ];
