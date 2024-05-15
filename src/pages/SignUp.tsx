@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UsersApiService } from "../services/UsersApiService";
 import { UserResource } from "../resources/responses/UserResource";
@@ -8,7 +8,16 @@ import { ProfileResource } from "../resources/responses/ProfileResource";
 import { ProfilesApiService } from "../services/ProfilesApiService";
 import { DrawerHeader } from "../components/shared/Material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { FormHelperText, Box, Typography } from "@mui/material";
+import {
+  FormHelperText,
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 import Logo from "../assets/svgs/logo.svg";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
 import { CustomTextField } from "../components/shared/widgets/Mui/Input";
@@ -31,15 +40,10 @@ const registerUser = async (email: string, password: string): Promise<any> => {
   }
 };
 
-const registerProfile = async (): Promise<any> => {
+const registerProfile = async (
+  saveProfileResource: SaveProfileResource
+): Promise<any> => {
   try {
-    const saveProfileResource: SaveProfileResource = {
-      name: "string",
-      last_name: "string",
-      birth_date: new Date(),
-      district: "string",
-      region: "string",
-    };
     const profileResource: ProfileResource =
       await ProfilesApiService.createProfile(saveProfileResource);
 
@@ -49,19 +53,13 @@ const registerProfile = async (): Promise<any> => {
   }
 };
 
-const getProfile = async (): Promise<any> => {
-  try {
-    const profileResource: ProfileResource =
-      await ProfilesApiService.getProfile();
-    return profileResource;
-  } catch (error) {
-    console.error("Error while getting profile", error);
-  }
-};
-
 export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [docNumber, setDocNumber] = useState("");
+  const [gender, setGender] = useState("female");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -120,14 +118,17 @@ export const SignUp = () => {
         return; // something was wrong
       }
 
-      const existingProfile = await getProfile();
-      if (existingProfile && existingProfile.id) {
-        navigate("/");
-        window.location.reload();
-        return;
-      }
+      const saveProfileResource: SaveProfileResource = {
+        name: name,
+        last_name: lastName,
+        birth_date: new Date("1995-12-17"),
+        district: "",
+        region: "",
+        gender: gender ? "female" : "male",
+        document_number: docNumber,
+      };
 
-      const profileResource = await registerProfile();
+      const profileResource = await registerProfile(saveProfileResource);
       if (!profileResource || !profileResource.id) {
         setLoading(false);
         return; // something was wrong
@@ -138,6 +139,15 @@ export const SignUp = () => {
       window.location.reload();
     }
   };
+
+  useEffect(() => {
+    console.log(new Date("1995-12-17"));
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -193,6 +203,83 @@ export const SignUp = () => {
                 error={!!passwordError}
               />
               <FormHelperText error>{passwordError}</FormHelperText>
+            </div>
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Nombre
+            </Typography>
+            <div className="form-group">
+              <CustomTextField
+                placeholder="Ej.: Juan"
+                type="text"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Apellido
+            </Typography>
+            <div className="form-group">
+              <CustomTextField
+                placeholder="Ej.: Pérez"
+                type="text"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+              />
+            </div>
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Sexo
+            </Typography>
+            <div
+              className="form-group"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <RadioGroup
+                row
+                defaultValue="female"
+                name="radio-buttons-group"
+                value={gender}
+                onChange={(e) => {
+                  console.log(e.target);
+                  setGender((e.target as HTMLInputElement).value);
+                }}
+              >
+                <FormControlLabel
+                  value="female"
+                  control={<Radio />}
+                  label="Femenino"
+                />
+                <FormControlLabel
+                  value="male"
+                  control={<Radio />}
+                  label="Masculino"
+                />
+              </RadioGroup>
+            </div>
+            <Typography color="primary" sx={{ mt: 2 }}>
+              Documento de Identidad
+            </Typography>
+            <div className="form-group">
+              <CustomTextField
+                placeholder="Ej.: 123456789"
+                type="text"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={docNumber}
+                onChange={(e) => {
+                  setDocNumber(e.target.value);
+                }}
+              />
             </div>
             <div className="form-group">
               <CustomButton

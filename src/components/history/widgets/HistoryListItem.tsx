@@ -97,9 +97,9 @@ export const HistoryListItem: React.FC<Props> = ({ data, onUpdate }) => {
         <div style={{ width: 46 }}>
           <IconButton color="primary" onClick={handleClick}>
             {data.favorite ? (
-              <StarBorderIcon sx={{ color: "#0D2B23" }} />
-            ) : (
               <StarIcon sx={{ color: "#0D2B23" }} />
+            ) : (
+              <StarBorderIcon sx={{ color: "#0D2B23" }} />
             )}
           </IconButton>
         </div>

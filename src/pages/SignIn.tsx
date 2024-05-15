@@ -32,34 +32,6 @@ const loginUser = async (email: string, password: string): Promise<any> => {
   }
 };
 
-const registerProfile = async (): Promise<any> => {
-  try {
-    const saveProfileResource: SaveProfileResource = {
-      name: "string",
-      last_name: "string",
-      birth_date: new Date(),
-      district: "string",
-      region: "string",
-    };
-    const profileResource: ProfileResource =
-      await ProfilesApiService.createProfile(saveProfileResource);
-
-    return profileResource;
-  } catch (error) {
-    console.error("Error during profile creation", error);
-  }
-};
-
-const getProfile = async (): Promise<any> => {
-  try {
-    const profileResource: ProfileResource =
-      await ProfilesApiService.getProfile();
-    return profileResource;
-  } catch (error) {
-    console.error("Error while getting profile", error);
-  }
-};
-
 export const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -130,21 +102,8 @@ export const SignIn = () => {
         return; // something was wrong
       }
 
-      const existingProfile = await getProfile();
-      if (existingProfile && existingProfile.id) {
-        navigate("/"); // ideal scenario
-        window.location.reload();
-        return;
-      }
-
-      const profileResource = await registerProfile();
-      if (!profileResource || !profileResource.id) {
-        setLoading(false);
-        return; // something was wrong in registration
-      }
-
       setLoading(false);
-      navigate("/");
+      navigate("/"); // ideal scenario
       window.location.reload();
     }
   };
@@ -158,6 +117,13 @@ export const SignIn = () => {
       }
     }
   }, [openPasswordModal]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
