@@ -17,65 +17,80 @@ import DragAndDrop from "../components/documentAnalyzer/DragAndDrop";
 import "../shared/styles/dropzone.css";
 import { CustomButton } from "../components/shared/widgets/Mui/Button";
 
-const uploadContract = async (
-  name: string,
-  file: any,
-  bankId: number
-): Promise<any> => {
+// const uploadContractV1 = async (
+//   name: string,
+//   file: any,
+//   bankId: number
+// ): Promise<any> => {
+//   try {
+//     const saveContractResource: SaveContractResource = {
+//       name,
+//       bank_id: bankId,
+//     };
+
+//     // 1. Crea el contrato
+//     const contractResource: ContractResource =
+//       await ContractsApiService.uploadContract(saveContractResource);
+//     if (!contractResource.id) {
+//       throw new Error("Contract id is not defined");
+//     }
+
+//     // 2. Sube el archivo
+//     const contractWithUrlResource: ContractResource =
+//       await ContractsApiService.uploadPDF(contractResource.id, file);
+//     console.log(contractWithUrlResource);
+//     if (!contractWithUrlResource.file_url) {
+//       throw new Error("File url is not defined");
+//     }
+
+//     // 3. Analiza el contrato
+//     const termsWithInterpretationResources: TermResource[] =
+//       await ContractsApiService.generateTermsInterpretationByContractId(
+//         contractWithUrlResource.id
+//       );
+//     if (
+//       !termsWithInterpretationResources ||
+//       termsWithInterpretationResources.length === 0 ||
+//       !termsWithInterpretationResources[0].interpretation
+//     ) {
+//       console.error(
+//         "Error during file upload: terms do not have interpretation"
+//       );
+//     }
+
+//     // 4. Analiza las leyes de protección al consumidor
+//     const termsWithConsumerProtectionLawResources: TermResource[] =
+//       await ContractsApiService.matchTermsWithConsumerProtectionLawsByContractId(
+//         contractWithUrlResource.id
+//       );
+//     if (
+//       !termsWithConsumerProtectionLawResources ||
+//       termsWithConsumerProtectionLawResources.length === 0 ||
+//       !termsWithConsumerProtectionLawResources[0].consumer_protection_law
+//     ) {
+//       console.error(
+//         "Error during file upload: terms do not have consumer protection law"
+//       );
+//     }
+
+//     console.log(termsWithConsumerProtectionLawResources);
+
+//     return contractWithUrlResource;
+//   } catch (error) {
+//     console.error("Error during file upload", error);
+//     alert(
+//       "Se produjo un error mientras se analizaba el documento, inténtelo nuevamente."
+//     );
+//   }
+// };
+
+const uploadContractV2 = async (bankId: number, file: any): Promise<any> => {
   try {
-    const saveContractResource: SaveContractResource = {
-      name,
-      bank_id: bankId,
-    };
     const contractResource: ContractResource =
-      await ContractsApiService.uploadContract(saveContractResource);
-    if (!contractResource.id) {
-      throw new Error("Contract id is not defined");
-    }
-
-    const contractWithUrlResource: ContractResource =
-      await ContractsApiService.uploadPDF(contractResource.id, file);
-    console.log(contractWithUrlResource);
-    if (!contractWithUrlResource.file_url) {
-      throw new Error("File url is not defined");
-    }
-
-    const termsWithInterpretationResources: TermResource[] =
-      await ContractsApiService.generateTermsInterpretationByContractId(
-        contractWithUrlResource.id
-      );
-    if (
-      !termsWithInterpretationResources ||
-      termsWithInterpretationResources.length === 0 ||
-      !termsWithInterpretationResources[0].interpretation
-    ) {
-      console.error(
-        "Error during file upload: terms do not have interpretation"
-      );
-    }
-
-    const termsWithConsumerProtectionLawResources: TermResource[] =
-      await ContractsApiService.matchTermsWithConsumerProtectionLawsByContractId(
-        contractWithUrlResource.id
-      );
-    if (
-      !termsWithConsumerProtectionLawResources ||
-      termsWithConsumerProtectionLawResources.length === 0 ||
-      !termsWithConsumerProtectionLawResources[0].consumer_protection_law
-    ) {
-      console.error(
-        "Error during file upload: terms do not have consumer protection law"
-      );
-    }
-
-    console.log(termsWithConsumerProtectionLawResources);
-
-    return contractWithUrlResource;
+      await ContractsApiService.uploadContractByBankId(bankId, file);
+    return contractResource;
   } catch (error) {
     console.error("Error during file upload", error);
-    alert(
-      "Se produjo un error mientras se analizaba el documento, inténtelo nuevamente."
-    );
   }
 };
 
@@ -165,16 +180,29 @@ export const UploadContract = () => {
     if (!error) {
       setFileErrorMessage("");
       setBankErrorMessage("");
-      const contractResource = await uploadContract(
-        selectedFile!.name,
-        selectedFile,
-        Number(selectedBank)
+
+      // V1
+      // const contractResource = await uploadContractV1(
+      //   selectedFile!.name,
+      //   selectedFile,
+      //   Number(selectedBank)
+      // );
+
+      // V2
+      const contractResource = await uploadContractV2(
+        Number(selectedBank),
+        selectedFile
       );
+
       setLoading(false);
 
-      console.log(contractResource);
+      // Por el momento no está configurado en su totalidad el endpoint para redirigir a la página de análisis
+      // console.log(contractResource);
+      // if (contractResource && contractResource.id) {
+      //   navigate(`/document-analyzer/${contractResource.id}`);
+      // }
       if (contractResource && contractResource.id) {
-        navigate(`/document-analyzer/${contractResource.id}`);
+        navigate("/history");
       }
     }
   };

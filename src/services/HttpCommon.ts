@@ -19,6 +19,23 @@ export class api {
       .catch((error) => Promise.reject(error));
   }
 
+  static postFile(url: string, file: any): Promise<any> {
+    const token = localStorage.getItem("token");
+    const config = token
+      ? { headers: { Authorization: `Bearer ${token}` } }
+      : undefined;
+
+    const formData = new FormData();
+    formData.append("contract_file", file);
+
+    const urlWithBase = `${this.baseUrl}${url}`;
+
+    return axios
+      .post(urlWithBase, formData, config)
+      .then((response) => response.data)
+      .catch((error) => Promise.reject(error));
+  }
+
   static put(url: string, data: any): Promise<any> {
     const token = localStorage.getItem("token");
     const config = token

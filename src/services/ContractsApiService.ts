@@ -3,6 +3,7 @@ import { api } from "./HttpCommon";
 export class ContractsApiService {
   static baseUrl = "/contracts";
 
+  // <!-------------------V1---------------------
   static uploadContract(data: any) {
     return api.post(this.baseUrl, data);
   }
@@ -25,6 +26,13 @@ export class ContractsApiService {
       null
     );
   }
+  // --------------------------------------------!>
+
+  // <!-------------------V2---------------------
+  static uploadContractByBankId(bankId: number, file: any) {
+    return api.postFile(`${this.baseUrl}/banks/${bankId}`, file);
+  }
+  // --------------------------------------------!>
 
   // static deleteContract(contractId: number) {
   //     return api.delete(`${this.baseUrl}/${contractId}`);
