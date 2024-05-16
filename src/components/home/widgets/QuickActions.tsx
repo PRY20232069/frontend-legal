@@ -1,5 +1,6 @@
 import { Link, To, useNavigate } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import { SectionTitle } from "./SectionTitle";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -32,7 +33,7 @@ export const QuickActions = () => {
         <QuickAction
           name="Ranking"
           path={"/ranking"}
-          icon={<CloudUploadIcon sx={{ color: "#191C3A" }} />}
+          icon={<BarChartIcon color="primary" />}
           color="#191C3A"
           bgColor="#E1EBF9"
           mr={0}
