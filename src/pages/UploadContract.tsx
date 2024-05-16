@@ -202,7 +202,7 @@ export const UploadContract = () => {
       //   navigate(`/document-analyzer/${contractResource.id}`);
       // }
       if (contractResource && contractResource.id) {
-        navigate("/history");
+        navigate(`/document-analyzer/${contractResource.id}`);
       }
     }
   };

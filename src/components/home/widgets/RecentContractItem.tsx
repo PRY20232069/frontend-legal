@@ -77,9 +77,9 @@ export const RecentContractItem: React.FC<Props> = ({ data, onUpdate }) => {
       <TableCell align="center" sx={{ color: "#0D2B23" }}>
         <IconButton color="primary" onClick={handleClick}>
           {data.favorite ? (
-            <StarBorderIcon sx={{ color: "#0D2B23" }} />
-          ) : (
             <StarIcon sx={{ color: "#0D2B23" }} />
+          ) : (
+            <StarBorderIcon sx={{ color: "#0D2B23" }} />
           )}
         </IconButton>
       </TableCell>

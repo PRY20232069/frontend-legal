@@ -13,22 +13,28 @@ import { filterItemsByStringAndBoolean } from "../shared/utils/search-utils";
 
 const getAllContracts = async (): Promise<any> => {
   try {
-    const contractResources: ContractResource[] = await ContractsApiService.getAllContracts();
+    const contractResources: ContractResource[] =
+      await ContractsApiService.getAllContracts();
     return contractResources;
   } catch (error) {
-    console.error('Error during file upload', error);
+    console.error("Error during file upload", error);
   }
 };
 
 export const Favorites = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [contractItems, setContractItems] = useState<ContractResource[]>([]);
   const [filteredItems, setFilteredItems] = useState<ContractResource[]>([]);
 
   useEffect(() => {
     const fetchContracts = async () => {
       const contractResources = await getAllContracts();
-      const filtered = filterItemsByStringAndBoolean(contractResources, 'name', searchTerm, 'favorite');
+      const filtered = filterItemsByStringAndBoolean(
+        contractResources,
+        "name",
+        searchTerm,
+        "favorite"
+      );
       setContractItems(filtered || []);
       setFilteredItems(filtered || []);
     };
@@ -37,14 +43,21 @@ export const Favorites = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = filterItemsByStringAndBoolean(contractItems, 'name', searchTerm, 'favorite');
+    const filtered = filterItemsByStringAndBoolean(
+      contractItems,
+      "name",
+      searchTerm,
+      "favorite"
+    );
     setFilteredItems(filtered);
   }, [contractItems, searchTerm]);
 
   const onHistoryItemUpdate = useCallback((updatedData: ContractResource) => {
-    setContractItems(prevItems => {
+    setContractItems((prevItems) => {
       const updatedItems = [...prevItems];
-      const index = updatedItems.findIndex(item => item.id === updatedData.id);
+      const index = updatedItems.findIndex(
+        (item) => item.id === updatedData.id
+      );
       updatedItems[index] = updatedData;
       return updatedItems;
     });
@@ -61,12 +74,17 @@ export const Favorites = () => {
 
       <HistoryListContainer>
         <HistoryListHeader />
-        {filteredItems.length > 0 ?
+        {filteredItems.length > 0 ? (
           filteredItems.map((item, index) => (
-            <HistoryListItem key={index} data={item} onUpdate={onHistoryItemUpdate} />
-          )) :
+            <HistoryListItem
+              key={index}
+              data={item}
+              onUpdate={onHistoryItemUpdate}
+            />
+          ))
+        ) : (
           <p style={{ marginLeft: 15 }}>No hay contratos favoritos</p>
-        }
+        )}
       </HistoryListContainer>
     </PageContainer>
   );
