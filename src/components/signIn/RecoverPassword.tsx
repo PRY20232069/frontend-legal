@@ -12,6 +12,22 @@ import { CustomTextField } from "../shared/widgets/Mui/Input";
 import { CustomButton } from "../shared/widgets/Mui/Button";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../shared/widgets/ToastDisplay";
+import { RecoverPasswordResource } from "../../resources/requests/RecoverPasswordResource";
+import { UserResource } from "../../resources/responses/UserResource";
+import { UsersApiService } from "../../services/UsersApiService";
+import LoadingComponent from "../shared/widgets/LoadingComponent";
+
+const recoverPassword = async (email: string): Promise<any> => {
+  try {
+    const recoverPasswordResource: RecoverPasswordResource = { email };
+    const userResource: UserResource = await UsersApiService.recoverPassword(
+      recoverPasswordResource
+    );
+    return userResource;
+  } catch (error) {
+    console.error("Error during authentication", error);
+  }
+};
 
 interface IRecoverPassword {
   open: boolean;
@@ -23,6 +39,24 @@ interface IRecoverPassword {
 }
 
 const RecoverPassword: React.FC<IRecoverPassword> = (props) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const handleRecoverPassword = () => {
+    setLoading(true);
+    recoverPassword(props.email)
+      .then(() => {
+        toast.success(
+          <ToastDisplay
+            title="Correo enviado"
+            message="Revisa tu bandeja de entrada, spam o correo no deseado."
+          />
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+        props.setOpen(false);
+      });
+  };
+
   return (
     <React.Fragment>
       <Dialog
@@ -62,17 +96,23 @@ const RecoverPassword: React.FC<IRecoverPassword> = (props) => {
             margin="normal"
             value={props.email}
             onChange={props.handleEmailChange}
+            error={!!props.emailError}
           />
           <FormHelperText error>{props.emailError}</FormHelperText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-          <CustomButton variant="contained" color="primary" type="submit">
+          <CustomButton
+            variant="contained"
+            color="primary"
+            onClick={handleRecoverPassword}
+          >
             Enviar
           </CustomButton>
         </DialogActions>
       </Dialog>
       <Toaster />
+      {loading && <LoadingComponent />}
     </React.Fragment>
   );
 };
