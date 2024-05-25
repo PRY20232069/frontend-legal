@@ -52,7 +52,6 @@ export const RecentContractsList = () => {
         }
       }
     };
-
     fetchContracts();
   }, []);
 
@@ -63,6 +62,13 @@ export const RecentContractsList = () => {
         (item) => item.id === updatedData.id
       );
       updatedItems[index] = updatedData;
+      return updatedItems;
+    });
+  }, []);
+
+  const onHistoryItemDelete = useCallback((contractId: number) => {
+    setContractItems((prevItems) => {
+      const updatedItems = prevItems.filter((item) => item.id !== contractId);
       return updatedItems;
     });
   }, []);
@@ -98,6 +104,7 @@ export const RecentContractsList = () => {
                         key={index}
                         data={item}
                         onUpdate={onHistoryItemUpdate}
+                        onRemove={onHistoryItemDelete}
                       />
                     </React.Fragment>
                   ))}
