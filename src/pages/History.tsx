@@ -31,23 +31,27 @@ export const History = () => {
   const [filteredItems, setFilteredItems] = useState<ContractResource[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchContracts = async () => {
-    setLoading(true);
-    const contractResources = await getAllContracts();
-    setContractItems(contractResources || []);
-    setFilteredItems(contractResources || []);
-
-    if (contractResources === undefined) {
-      toast.error(
-        <ToastDisplay
-          title="Error en el servidor, intenta nuevamente"
-          message=""
-        />
-      );
-    }
-    setLoading(false);
-  };
   useEffect(() => {
+    const fetchContracts = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        setLoading(true);
+        const contractResources = await getAllContracts();
+        setContractItems(contractResources || []);
+        setFilteredItems(contractResources || []);
+
+        if (contractResources === undefined) {
+          toast.error(
+            <ToastDisplay
+              title="Error en el servidor, intenta nuevamente"
+              message=""
+            />
+          );
+        }
+        setLoading(false);
+      }
+    };
+
     fetchContracts();
   }, []);
 

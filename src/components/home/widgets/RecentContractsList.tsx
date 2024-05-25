@@ -38,15 +38,18 @@ export const RecentContractsList = () => {
 
   useEffect(() => {
     const fetchContracts = async () => {
-      const contractResources = await getAllContracts();
-      setContractItems(contractResources || []);
-      if (contractResources === undefined) {
-        toast.error(
-          <ToastDisplay
-            title="Error. Los contratos no lograron cargarse correctamente"
-            message=""
-          />
-        );
+      const token = localStorage.getItem("token");
+      if (token) {
+        const contractResources = await getAllContracts();
+        setContractItems(contractResources || []);
+        if (contractResources === undefined) {
+          toast.error(
+            <ToastDisplay
+              title="Error. Los contratos no lograron cargarse correctamente"
+              message=""
+            />
+          );
+        }
       }
     };
 

@@ -2,7 +2,7 @@ import { PageContainer } from "../components/shared/layout/PageContainer";
 import { RecentContractsList } from "../components/home/widgets/RecentContractsList";
 import { QuickActions } from "../components/home/widgets/QuickActions";
 import { WelcomeLegalAdvices } from "../components/home/widgets/WelcomeLegalAdvices";
-import { Container, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import AdviseImg from "../assets/svgs/consejos.svg";
 
 export const Home = () => {

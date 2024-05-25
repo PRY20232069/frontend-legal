@@ -25,7 +25,14 @@ const LoadingComponent = (props: data) => {
         <div className="sr-only" style={{ color: "#fff", fontWeight: "bold" }}>
           Cargando...
         </div>
-        {props.text && <p className="text-center mt-3">{props.text}</p>}
+        {props.text && (
+          <p
+            className="text-center mt-3"
+            style={{ color: "#fff", fontWeight: "bold" }}
+          >
+            {props.text}
+          </p>
+        )}
       </div>
     </Modal>
   );

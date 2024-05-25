@@ -7,7 +7,6 @@ import Plans from "../components/profile/Plans";
 import { DrawerHeader } from "../components/shared/Material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { ProfileResource } from "../resources/responses/ProfileResource";
 import { ProfilesApiService } from "../services/ProfilesApiService";
 import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 
@@ -17,19 +16,9 @@ export const Profile = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const getProfile = async (): Promise<any> => {
-    try {
-      const profileResource: ProfileResource =
-        await ProfilesApiService.getProfile();
-      return profileResource;
-    } catch (error) {
-      console.error("Error while getting profile", error);
-    }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    getProfile()
+    await ProfilesApiService.getProfile()
       .then((profile) => {
+        setLoading(true);
         var temp: IProfile = {
           personalInformation: {
             id: profile.id,
@@ -53,9 +42,19 @@ export const Profile = () => {
         };
         setData(temp);
       })
+      .catch((error) => {
+        console.error("Error while getting profile", error);
+      })
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      getProfile();
+    }
   }, []);
 
   return (

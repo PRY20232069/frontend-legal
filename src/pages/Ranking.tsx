@@ -11,39 +11,40 @@ import { BankResource } from "../resources/responses/BankResource";
 import { RankingListItem } from "../components/ranking/widgets/RankingListItem";
 import { RankingListHeader } from "../components/ranking/widgets/HistoryListHeader";
 
-const getAllBanks = async (): Promise<any> => {
-  try {
-    const bankResources: BankResource[] = await BanksApiService.getAllBanks();
-    return bankResources;
-  } catch (error) {
-    console.error('Error during file upload', error);
-  }
-};
-
 export const Ranking = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [bankItems, setBankItems] = useState<BankResource[]>([]);
   const [filteredItems, setFilteredItems] = useState<BankResource[]>([]);
 
   useEffect(() => {
     const fetchBanks = async () => {
-      const bankResources = await getAllBanks();
-      setBankItems(bankResources || []);
-      setFilteredItems(bankResources || []);
+      const token = localStorage.getItem("token");
+      if (token) {
+        await BanksApiService.getAllBanks()
+          .then((response) => {
+            setBankItems(response || []);
+            setFilteredItems(response || []);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     };
 
     fetchBanks();
   }, []);
 
   useEffect(() => {
-    const filtered = filterItemsByString(bankItems, 'name', searchTerm);
+    const filtered = filterItemsByString(bankItems, "name", searchTerm);
     setFilteredItems(filtered);
   }, [bankItems, searchTerm]);
 
   return (
     <PageContainer>
       <PageTitle>Ranking</PageTitle>
-      <PageSubtitle>Compara y elige el mejor banco para tus contratos.</PageSubtitle>
+      <PageSubtitle>
+        Compara y elige el mejor banco para tus contratos.
+      </PageSubtitle>
 
       <FiltersBar>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -51,14 +52,14 @@ export const Ranking = () => {
 
       <HistoryListContainer>
         <RankingListHeader />
-        {filteredItems && (
-          filteredItems.length > 0 ?
+        {filteredItems &&
+          (filteredItems.length > 0 ? (
             filteredItems.map((item, index) => (
               <RankingListItem key={index} data={item} />
-            )) :
+            ))
+          ) : (
             <p style={{ marginLeft: 15 }}>No se han encontrado bancos</p>
-        )
-        }
+          ))}
       </HistoryListContainer>
     </PageContainer>
   );

@@ -99,7 +99,7 @@ const getAllBanks = async (): Promise<any> => {
     const bankResources: BankResource[] = await BanksApiService.getAllBanks();
     return bankResources;
   } catch (error) {
-    console.error("Error during file upload", error);
+    console.error(error);
   }
 };
 
@@ -189,6 +189,7 @@ export const UploadContract = () => {
       // );
 
       // V2
+
       const contractResource = await uploadContractV2(
         Number(selectedBank),
         selectedFile
@@ -196,11 +197,6 @@ export const UploadContract = () => {
 
       setLoading(false);
 
-      // Por el momento no está configurado en su totalidad el endpoint para redirigir a la página de análisis
-      // console.log(contractResource);
-      // if (contractResource && contractResource.id) {
-      //   navigate(`/document-analyzer/${contractResource.id}`);
-      // }
       if (contractResource && contractResource.id) {
         navigate(`/document-analyzer/${contractResource.id}`);
       }
@@ -265,7 +261,9 @@ export const UploadContract = () => {
             >
               Analizar
             </CustomButton>
-            {loading && <LoadingComponent />}
+            {loading && (
+              <LoadingComponent text="Tomate un ☕. Este análisis del contrato podría tardar 5 minutos o más" />
+            )}
           </div>
         )}
       </div>

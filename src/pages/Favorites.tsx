@@ -28,15 +28,18 @@ export const Favorites = () => {
 
   useEffect(() => {
     const fetchContracts = async () => {
-      const contractResources = await getAllContracts();
-      const filtered = filterItemsByStringAndBoolean(
-        contractResources,
-        "name",
-        searchTerm,
-        "favorite"
-      );
-      setContractItems(filtered || []);
-      setFilteredItems(filtered || []);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const contractResources = await getAllContracts();
+        const filtered = filterItemsByStringAndBoolean(
+          contractResources,
+          "name",
+          searchTerm,
+          "favorite"
+        );
+        setContractItems(filtered || []);
+        setFilteredItems(filtered || []);
+      }
     };
 
     fetchContracts();
