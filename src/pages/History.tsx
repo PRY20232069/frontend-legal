@@ -71,6 +71,13 @@ export const History = () => {
     });
   }, []);
 
+  const onHistoryItemDelete = useCallback((contractId: number) => {
+    setContractItems((prevItems) => {
+      const updatedItems = prevItems.filter((item) => item.id !== contractId);
+      return updatedItems;
+    });
+  }, []);
+
   return (
     <PageContainer>
       <PageTitle>Historial</PageTitle>
@@ -92,6 +99,7 @@ export const History = () => {
                     key={index}
                     data={item}
                     onUpdate={onHistoryItemUpdate}
+                    onRemove={onHistoryItemDelete}
                   />
                 ))
               ) : (

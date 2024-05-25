@@ -66,6 +66,13 @@ export const Favorites = () => {
     });
   }, []);
 
+  const onHistoryItemDelete = useCallback((contractId: number) => {
+    setContractItems((prevItems) => {
+      const updatedItems = prevItems.filter((item) => item.id !== contractId);
+      return updatedItems;
+    });
+  }, []);
+
   return (
     <PageContainer>
       <PageTitle>Favoritos</PageTitle>
@@ -83,6 +90,7 @@ export const Favorites = () => {
               key={index}
               data={item}
               onUpdate={onHistoryItemUpdate}
+              onRemove={onHistoryItemDelete}
             />
           ))
         ) : (
