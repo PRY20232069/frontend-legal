@@ -1,9 +1,9 @@
 export interface SaveProfileResource {
-  name: string;
-  last_name: string;
+  name: String;
+  last_name: String;
   birth_date: Date;
-  district: string;
-  region: string;
-  gender: string;
-  document_number: string;
+  district: String;
+  region: String;
+  gender: String;
+  document_number: String;
 }

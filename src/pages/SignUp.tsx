@@ -122,7 +122,7 @@ export const SignUp = () => {
         birth_date: new Date("1995-12-17"),
         district: "",
         region: "",
-        gender: gender ? "female" : "male",
+        gender: gender,
         document_number: docNumber,
       };
 

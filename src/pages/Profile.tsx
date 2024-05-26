@@ -16,16 +16,16 @@ export const Profile = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const getProfile = async (): Promise<any> => {
+    setLoading(true);
     await ProfilesApiService.getProfile()
       .then((profile) => {
-        setLoading(true);
         var temp: IProfile = {
           personalInformation: {
             id: profile.id,
             name: profile.name,
             lastName: profile.last_name,
             email: profile.email,
-            sex: profile.gender === "male" ? false : true,
+            sex: profile.gender,
             birthday: profile.birth_date,
             document: profile.document_number,
           },
@@ -69,7 +69,7 @@ export const Profile = () => {
       </Typography>
       {data && (
         <>
-          <PersonalInformation data={data} />
+          <PersonalInformation data={data} setLoading={setLoading} />
           <Membership data={data} setOpen={setOpenModal} />
           <Plans data={data} open={openModal} setOpen={setOpenModal} />
         </>

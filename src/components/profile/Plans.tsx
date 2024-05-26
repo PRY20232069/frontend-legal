@@ -10,6 +10,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { CustomButton } from "../shared/widgets/Mui/Button";
 
 interface IPlans {
   data: IProfile;
@@ -21,26 +22,33 @@ const Plans: React.FC<IPlans> = (props) => {
   return (
     <Dialog
       fullWidth
+      maxWidth="lg"
       onClose={() => props.setOpen(!props.open)}
       open={props.open}
     >
-      <DialogTitle sx={{ textAlign: "center" }}>
-        <Typography variant="h4" color="text.secondary" gutterBottom>
-          Planes
+      <DialogTitle>
+        <Typography
+          variant="h5"
+          color="primary"
+          gutterBottom
+          sx={{ fontWeight: "bold", ml: 2, mt: 2 }}
+        >
+          Mejora tu plan
         </Typography>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ mb: 1 }}>
         <Grid2 container sx={{ justifyContent: "center" }}>
           {props.data.plans.map((p, i) => {
             const whatsappLink = `https://api.whatsapp.com/send?phone=51990998136&text=Hola%20soy%20${props.data.personalInformation.name},%20mi%20%20código%20es%20${props.data.personalInformation.id}%20y%20deseo%20adquirir%20el%20plan%20${p.planName}.`;
             return (
-              <Grid2 key={i} xs={12} md={4} sx={{ mb: 2, mr: 2 }}>
+              <Grid2 key={i} xs={12} md={3} sx={{ mb: 2, mr: 2 }}>
                 <Card>
                   <CardContent>
                     <Typography
                       variant="h5"
-                      color="text.secondary"
+                      color="primary"
                       gutterBottom
+                      sx={{ fontWeight: "bold" }}
                     >
                       {p.planName}
                     </Typography>
@@ -53,12 +61,16 @@ const Plans: React.FC<IPlans> = (props) => {
                     </Typography>
                   </CardContent>
                   <CardActions sx={{ justifyContent: "center" }}>
-                    <Button
-                      onClick={() => window.open(whatsappLink, "_blank")}
+                    <CustomButton
+                      variant="contained"
+                      color="primary"
+                      // sx={{ width: "80%" }}
                       size="small"
+                      fullWidth
+                      onClick={() => window.open(whatsappLink, "_blank")}
                     >
                       Adquirir
-                    </Button>
+                    </CustomButton>
                   </CardActions>
                 </Card>
               </Grid2>

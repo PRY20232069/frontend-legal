@@ -8,7 +8,7 @@ interface IToastDisplay {
 const ToastDisplay: React.FC<IToastDisplay> = (props) => {
   return (
     <div>
-      <h4 style={{ fontWeight: "bold" }}>{props.title}</h4>
+      <h5 style={{ fontWeight: "bold" }}>{props.title}</h5>
       <p>{props.message}</p>
     </div>
   );

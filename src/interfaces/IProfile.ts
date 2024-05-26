@@ -3,7 +3,7 @@ export interface IPersonalInformation {
   name: String;
   lastName: String;
   email: String;
-  sex: boolean;
+  sex: String;
   birthday: String;
   document: number;
 }

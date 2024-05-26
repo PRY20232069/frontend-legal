@@ -10,12 +10,41 @@ import EditOffIcon from "@mui/icons-material/EditOff";
 import FormHelperText from "@mui/material/FormHelperText";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../../components/shared/widgets/ToastDisplay";
+import { ProfilesApiService } from "../../services/ProfilesApiService";
+import { SaveProfileResource } from "../../resources/requests/SaveProfileResource";
+import MenuItem from "@mui/material/MenuItem";
+import LoadingComponent from "../shared/widgets/LoadingComponent";
+
+const updateProfile = async (saveProfileResource: SaveProfileResource) => {
+  try {
+    const response = await ProfilesApiService.updateProfile(
+      saveProfileResource
+    );
+    if (response.status === 200) {
+      toast.success(
+        <ToastDisplay
+          title="Cambios aplicados"
+          message="Los cambios se han aplicado correctamente"
+        />
+      );
+    }
+  } catch (error) {
+    toast.error(
+      <ToastDisplay
+        title="Error al aplicar cambios"
+        message="Ocurrió un error al aplicar los cambios"
+      />
+    );
+  }
+};
 
 interface IPersonalInfo {
   data: IProfile;
+  setLoading: (state: boolean) => void;
 }
 
 const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
+  const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [nameError, setNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
@@ -41,6 +70,7 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    props.setLoading(true);
 
     let error = false;
 
@@ -61,6 +91,7 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
           message=""
         />
       );
+      props.setLoading(false);
       error = true;
       return;
     }
@@ -73,6 +104,7 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
           message=""
         />
       );
+      props.setLoading(false);
     }
 
     if (checkData(backUpinfo, info)) {
@@ -83,11 +115,42 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
           message=""
         />
       );
+      props.setLoading(false);
     }
 
     if (!error) {
       setEdit(false);
-      setbackUpinfo({ ...info });
+      // setbackUpinfo({ ...info });
+      console.log(info);
+      updateProfile({
+        name: info.name,
+        last_name: info.lastName,
+        gender: info.sex,
+        birth_date: new Date("1995-12-17"),
+        document_number: info.document.toString(),
+        district: "",
+        region: "",
+      })
+        .then(() => {
+          toast.success(
+            <ToastDisplay
+              title="Cambios aplicados"
+              message="Los cambios se han aplicado correctamente"
+            />
+          );
+        })
+        .catch((error) => {
+          toast.error(
+            <ToastDisplay
+              title="Error al aplicar cambios"
+              message="Ocurrió un error al aplicar los cambios"
+            />
+          );
+          console.error("Error while getting profile", error);
+        })
+        .finally(() => {
+          props.setLoading(false);
+        });
     }
   };
 
@@ -189,6 +252,7 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
                 },
               }}
               disabled={!edit}
+              error={!!nameError}
             />
             <FormHelperText error>{nameError}</FormHelperText>
           </Grid2>
@@ -210,53 +274,9 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
                 },
               }}
               disabled={!edit}
+              error={!!lastNameError}
             />
             <FormHelperText error>{lastNameError}</FormHelperText>
-          </Grid2>
-        </Grid2>
-        <Grid2 container>
-          <Grid2 xs={12} md={6} sx={{ mb: 2 }}>
-            <Typography color="primary" sx={{ mt: 2, fontWeight: "bold" }}>
-              Fecha de cumpleaños
-            </Typography>
-            <CustomTextField
-              variant="outlined"
-              margin="normal"
-              value={info.birthday}
-              onChange={(e) => handleChange("birthday", e.target.value)}
-              fullWidth
-              sx={{
-                width: "80%",
-                "& .MuiInputBase-input": {
-                  color: FCError ? "red" : "#668D84",
-                  border: FCError ? "red 1px solid" : "#FBFAFB 1px solid",
-                },
-              }}
-              disabled={!edit}
-            />
-
-            <FormHelperText error>{FCError}</FormHelperText>
-          </Grid2>
-          <Grid2 xs={12} md={6} sx={{ mb: 2 }}>
-            <Typography color="primary" sx={{ mt: 2, fontWeight: "bold" }}>
-              Documento de Identidad
-            </Typography>
-            <CustomTextField
-              variant="outlined"
-              margin="normal"
-              value={info.document}
-              onChange={(e) => handleChange("document", e.target.value)}
-              fullWidth
-              sx={{
-                width: "80%",
-                "& .MuiInputBase-input": {
-                  color: DNIError ? "red" : "#668D84",
-                  border: DNIError ? "red 1px solid" : "#FBFAFB 1px solid",
-                },
-              }}
-              disabled={!edit}
-            />
-            <FormHelperText error>{DNIError}</FormHelperText>
           </Grid2>
         </Grid2>
         <Grid2 container>
@@ -278,31 +298,86 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
                 },
               }}
               disabled={!edit}
+              error={!!emailError}
             />
             <FormHelperText error>{emailError}</FormHelperText>
           </Grid2>
+          <Grid2 xs={12} md={6} sx={{ mb: 2 }}>
+            <Typography color="primary" sx={{ mt: 2, fontWeight: "bold" }}>
+              Documento de Identidad
+            </Typography>
+            <CustomTextField
+              variant="outlined"
+              margin="normal"
+              value={info.document}
+              onChange={(e) => handleChange("document", e.target.value)}
+              fullWidth
+              sx={{
+                width: "80%",
+                "& .MuiInputBase-input": {
+                  color: DNIError ? "red" : "#668D84",
+                  border: DNIError ? "red 1px solid" : "#FBFAFB 1px solid",
+                },
+              }}
+              disabled={!edit}
+              error={!!DNIError}
+            />
+            <FormHelperText error>{DNIError}</FormHelperText>
+          </Grid2>
+        </Grid2>
+        <Grid2 container>
+          {/* <Grid2 xs={12} md={6} sx={{ mb: 2 }}>
+            <Typography color="primary" sx={{ mt: 2, fontWeight: "bold" }}>
+              Fecha de cumpleaños
+            </Typography>
+            <CustomTextField
+              variant="outlined"
+              margin="normal"
+              value={info.birthday}
+              onChange={(e) => handleChange("birthday", e.target.value)}
+              fullWidth
+              sx={{
+                width: "80%",
+                "& .MuiInputBase-input": {
+                  color: FCError ? "red" : "#668D84",
+                  border: FCError ? "red 1px solid" : "#FBFAFB 1px solid",
+                },
+              }}
+              disabled={true}
+            />
+
+            <FormHelperText error>{FCError}</FormHelperText>
+          </Grid2> */}
           <Grid2 xs={12} md={6} sx={{ mb: 4 }}>
             <Typography color="primary" sx={{ mt: 2, fontWeight: "bold" }}>
               Sexo
             </Typography>
             <CustomTextField
+              select
               variant="outlined"
               margin="normal"
-              value={info.sex ? "Femenino" : "Masculino"}
+              value={info.sex}
               onChange={(e) => handleChange("sex", e.target.value)}
               fullWidth
               sx={{ width: "80%" }}
               disabled={!edit}
-            />
+            >
+              <MenuItem value="male">
+                <em>Masculino</em>
+              </MenuItem>
+              <MenuItem value="female">
+                <em>Femenino</em>
+              </MenuItem>
+            </CustomTextField>
           </Grid2>
         </Grid2>
         {edit && (
-          <Grid2 xs={12} sx={{ textAlign: "center" }}>
+          <Grid2 xs={12} sx={{ textAlign: "end" }}>
             <CustomButton
               variant="contained"
               color="primary"
               type="submit"
-              sx={{ width: "80%" }}
+              sx={{ width: "30%" }}
               fullWidth
             >
               Aplicar cambios

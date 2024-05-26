@@ -14,7 +14,7 @@ const Footer = () => {
     <>
       {!tokenExist && (
         <Box>
-          <Divider sx={{ mb: 2 }} />
+          <Divider sx={{ mb: 1 }} />
           <Box
             component="main"
             sx={{
