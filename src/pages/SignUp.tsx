@@ -60,6 +60,9 @@ export const SignUp = () => {
   const [gender, setGender] = useState("female");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [DNIError, setDNIError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -87,6 +90,42 @@ export const SignUp = () => {
     }
   };
 
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
+    setName(newName);
+
+    // Validación del nombre
+    if (!newName) {
+      setNameError("El nombre es obligatorio");
+    } else {
+      setNameError("");
+    }
+  };
+
+  const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newLastName = event.target.value;
+    setLastName(newLastName);
+
+    // Validación del apellido
+    if (!newLastName) {
+      setLastNameError("El apellido es obligatorio");
+    } else {
+      setLastNameError("");
+    }
+  };
+
+  const handleDNIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newDNI = event.target.value;
+    setDocNumber(newDNI);
+
+    // Validación del DNI
+    if (newDNI.length < 8) {
+      setDNIError("El DNI debe tener al menos 8 dígitos");
+    } else {
+      setDNIError("");
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     let error = false;
@@ -105,6 +144,29 @@ export const SignUp = () => {
         <ToastDisplay title="No has ingresado la contraseña" message="" />
       );
       setPasswordError("La contraseña es obligatoria");
+      setLoading(false);
+      error = true;
+    }
+
+    if (!name || !lastName || !docNumber) {
+      toast.error(
+        <ToastDisplay
+          title="No has ingresado todos los datos requeridos"
+          message=""
+        />
+      );
+
+      if (!name) {
+        setNameError("El nombre es obligatorio");
+      }
+
+      if (!lastName) {
+        setLastNameError("El apellido es obligatorio");
+      }
+
+      if (!docNumber) {
+        setDNIError("El DNI es obligatorio");
+      }
       setLoading(false);
       error = true;
     }
@@ -213,10 +275,10 @@ export const SignUp = () => {
                 fullWidth
                 margin="normal"
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
+                onChange={handleNameChange}
+                error={!!nameError}
               />
+              <FormHelperText error>{nameError}</FormHelperText>
             </div>
             <Typography color="primary" sx={{ mt: 2 }}>
               Apellido
@@ -229,10 +291,10 @@ export const SignUp = () => {
                 fullWidth
                 margin="normal"
                 value={lastName}
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                }}
+                onChange={handleLastNameChange}
+                error={!!lastNameError}
               />
+              <FormHelperText error>{lastNameError}</FormHelperText>
             </div>
             <Typography color="primary" sx={{ mt: 2 }}>
               Sexo
@@ -269,15 +331,15 @@ export const SignUp = () => {
             <div className="form-group">
               <CustomTextField
                 placeholder="Ej.: 123456789"
-                type="text"
+                type="number"
                 variant="outlined"
                 fullWidth
                 margin="normal"
                 value={docNumber}
-                onChange={(e) => {
-                  setDocNumber(e.target.value);
-                }}
+                onChange={handleDNIChange}
+                error={!!DNIError}
               />
+              <FormHelperText error>{DNIError}</FormHelperText>
             </div>
             <div className="form-group">
               <CustomButton
