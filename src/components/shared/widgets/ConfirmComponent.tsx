@@ -17,6 +17,7 @@ interface IConfirmComponent {
   setOpen: (state: boolean) => void;
   loading: boolean;
   handleClick: () => void;
+  handleCancel: () => void;
 }
 
 const ConfirmComponent: React.FC<IConfirmComponent> = (props) => {
@@ -33,7 +34,7 @@ const ConfirmComponent: React.FC<IConfirmComponent> = (props) => {
             </DialogContent>
           )}
           <DialogActions>
-            <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
+            <Button onClick={props.handleCancel}>Cancelar</Button>
             <CustomButton
               variant="contained"
               color="primary"

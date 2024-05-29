@@ -99,14 +99,12 @@ export const RecentContractsList = () => {
                 </TableHead>
                 <TableBody>
                   {contractItems.map((item, index) => (
-                    <React.Fragment>
-                      <RecentContractItem
-                        key={index}
-                        data={item}
-                        onUpdate={onHistoryItemUpdate}
-                        onRemove={onHistoryItemDelete}
-                      />
-                    </React.Fragment>
+                    <RecentContractItem
+                      key={index}
+                      data={item}
+                      onUpdate={onHistoryItemUpdate}
+                      onRemove={onHistoryItemDelete}
+                    />
                   ))}
                 </TableBody>
               </Table>

@@ -120,6 +120,16 @@ export const HistoryListItem: React.FC<Props> = ({
       });
   };
 
+  const handleCancel = () => {
+    setOpenConfirmDelete(false);
+    toast.error(
+      <ToastDisplay
+        title="Eliminación cancelada"
+        message="El contrato no se eliminó"
+      />
+    );
+  };
+
   const formattedDate = (_date: Date) => {
     const date = new Date(_date);
     const day = date.getDate().toString().padStart(2, "0"); // Asegura que el día siempre tenga dos dígitos
@@ -165,6 +175,7 @@ export const HistoryListItem: React.FC<Props> = ({
         setOpen={setOpenConfirmDelete}
         loading={loading}
         handleClick={handleDelete}
+        handleCancel={handleCancel}
       />
       <Toaster />
     </>

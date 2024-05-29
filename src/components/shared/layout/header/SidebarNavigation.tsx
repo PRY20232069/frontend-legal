@@ -22,6 +22,7 @@ import { Drawer, DrawerHeader } from "../../Material";
 import { useLocation } from "react-router-dom";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Logo from "../../../../assets/svgs/logo.svg";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 interface ISidebarNavigation {
   open: boolean;
@@ -76,6 +77,12 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
     },
   ];
 
+  const logoutIcon = () => {
+    localStorage.removeItem("token");
+    navigate("/sign-in");
+    window.location.reload();
+  };
+
   useEffect(() => {
     const currentPath = location.pathname;
 
@@ -105,27 +112,28 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
       <Divider />
       <List>
         {iconos.map((element, index) => (
-          <React.Fragment key={index}>
-            <ListItem disablePadding={props.isSmallScreen}>
-              <ListItemButton
-                sx={{
-                  backgroundColor: selectedPage === index ? "#E1F9F7" : "",
-                }}
-                onClick={() => {
-                  handleLink(element.link, index);
-                }}
-              >
-                <ListItemIcon>{element.icon}</ListItemIcon>
-                <ListItemText
-                  primary={element.text}
-                  sx={{ color: "#193A32" }}
-                />
-              </ListItemButton>
-            </ListItem>
-
-            <Divider />
-          </React.Fragment>
+          <ListItem key={index} disablePadding={props.isSmallScreen}>
+            <ListItemButton
+              sx={{
+                backgroundColor: selectedPage === index ? "#E1F9F7" : "",
+              }}
+              onClick={() => {
+                handleLink(element.link, index);
+              }}
+            >
+              <ListItemIcon>{element.icon}</ListItemIcon>
+              <ListItemText primary={element.text} sx={{ color: "#193A32" }} />
+            </ListItemButton>
+          </ListItem>
         ))}
+        <ListItem disablePadding={props.isSmallScreen} sx={{ height: "100vh" }}>
+          <ListItemButton onClick={logoutIcon}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Cerrar sesión" sx={{ color: "#193A32" }} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   );

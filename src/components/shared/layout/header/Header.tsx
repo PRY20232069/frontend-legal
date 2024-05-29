@@ -36,7 +36,7 @@ const Header = () => {
 
   return (
     <Box>
-      {tokenExist && (
+      {/* {tokenExist && (
         <AppBar position="fixed" open={open} color="inherit">
           <Toolbar>
             {isSmallScreen && <img src={Logo} width={150} />}
@@ -45,6 +45,7 @@ const Header = () => {
               component="div"
               sx={{ flexGrow: 1 }}
             ></Typography>
+            Cerrar sesión
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -57,7 +58,7 @@ const Header = () => {
             </IconButton>
           </Toolbar>
         </AppBar>
-      )}
+      )} */}
       {tokenExist && (
         <SidebarNavigation
           open={open}
