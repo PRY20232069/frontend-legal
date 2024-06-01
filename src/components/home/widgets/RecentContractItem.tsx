@@ -21,12 +21,10 @@ const markContractAsFavorite = async (
       bank_id: contract.bank_id,
       favorite: !contract.favorite,
     };
-    const contractResource: ContractResource =
-      await ContractsApiService.updateContract(
-        contract.id,
-        saveContractResource
-      );
-    return contractResource;
+    return await ContractsApiService.updateContract(
+      contract.id,
+      saveContractResource
+    );
   } catch (error) {
     console.error("Error during c", error);
   }
@@ -62,8 +60,22 @@ export const RecentContractItem: React.FC<Props> = ({
 
   const handleFavorite = (event: React.MouseEvent) => {
     event.stopPropagation();
-    updateData();
-    markContractAsFavorite(data);
+    setLoading(true);
+    markContractAsFavorite(data)
+      .then((resp) => {
+        toast.success(
+          <ToastDisplay
+            title={`Se ${
+              resp.favorite ? "agregó de" : "eliminó de"
+            } favoritos correctamente`}
+            message=""
+          />
+        );
+        updateData();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleDeleteConfirmation = (event: React.MouseEvent) => {

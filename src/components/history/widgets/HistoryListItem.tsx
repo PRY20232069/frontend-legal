@@ -13,6 +13,7 @@ import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
 import ConfirmComponent from "../../shared/widgets/ConfirmComponent";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../../shared/widgets/ToastDisplay";
+import LoadingComponent from "../../shared/widgets/LoadingComponent";
 
 const markContractAsFavorite = async (
   contract: ContractResource
@@ -23,12 +24,10 @@ const markContractAsFavorite = async (
       bank_id: contract.bank_id,
       favorite: !contract.favorite,
     };
-    const contractResource: ContractResource =
-      await ContractsApiService.updateContract(
-        contract.id,
-        saveContractResource
-      );
-    return contractResource;
+    return ContractsApiService.updateContract(
+      contract.id,
+      saveContractResource
+    );
   } catch (error) {
     console.error("Error during file upload", error);
   }
@@ -79,6 +78,8 @@ export const HistoryListItem: React.FC<Props> = ({
   onRemove,
 }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState<boolean>(false);
+  const [openConfirmRemoveFav, setOpenConfirmRemoveFav] =
+    useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const updateData = useCallback(() => {
@@ -86,10 +87,41 @@ export const HistoryListItem: React.FC<Props> = ({
     onUpdate(updatedData);
   }, [data, onUpdate]);
 
-  const handleClick = (event: React.MouseEvent) => {
+  const markContract = () => {
+    setLoading(true);
+    markContractAsFavorite(data)
+      .then((resp) => {
+        toast.success(
+          <ToastDisplay
+            title={`Se ${
+              resp.favorite ? "agregó de" : "eliminó de"
+            } favoritos correctamente`}
+            message=""
+          />
+        );
+        updateData();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleClickFav = (event: React.MouseEvent) => {
     event.stopPropagation();
-    updateData();
-    markContractAsFavorite(data);
+    if (data.favorite) {
+      setOpenConfirmRemoveFav(true);
+    } else {
+      markContract();
+    }
+  };
+
+  const handleRemoveFav = () => {
+    markContract();
+    setOpenConfirmRemoveFav(false);
+  };
+
+  const handleCancelRemoveFav = () => {
+    setOpenConfirmRemoveFav(false);
   };
 
   const handleDeleteConfirmation = (event: React.MouseEvent) => {
@@ -120,7 +152,7 @@ export const HistoryListItem: React.FC<Props> = ({
       });
   };
 
-  const handleCancel = () => {
+  const handleCancelDelete = () => {
     setOpenConfirmDelete(false);
     toast.error(
       <ToastDisplay
@@ -153,7 +185,7 @@ export const HistoryListItem: React.FC<Props> = ({
             5 {/*data.num_observations*/}
           </div>
           <div style={{ display: "flex" }}>
-            <IconButton color="primary" onClick={handleClick}>
+            <IconButton color="primary" onClick={handleClickFav}>
               {data.favorite ? (
                 <StarIcon sx={{ color: "#0D2B23" }} />
               ) : (
@@ -168,16 +200,26 @@ export const HistoryListItem: React.FC<Props> = ({
       </ListItemContainer>
       <ConfirmComponent
         open={openConfirmDelete}
-        text={"¿Estas seguro que deseas eliminar este contrato?"}
+        text={"¿Estás seguro que deseas eliminar este contrato?"}
         subText={
           "Debes de tener en cuenta, que esta acción no se puede deshacer."
         }
         setOpen={setOpenConfirmDelete}
         loading={loading}
         handleClick={handleDelete}
-        handleCancel={handleCancel}
+        handleCancel={handleCancelDelete}
+      />
+      <ConfirmComponent
+        open={openConfirmRemoveFav}
+        text={""}
+        subText={"¿Estás seguro que deseas remover de favoritos este contrato?"}
+        setOpen={setOpenConfirmRemoveFav}
+        loading={loading}
+        handleClick={handleRemoveFav}
+        handleCancel={handleCancelRemoveFav}
       />
       <Toaster />
+      {loading && <LoadingComponent />}
     </>
   );
 };
