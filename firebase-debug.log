@@ -1,0 +1,52 @@
+[debug] [2024-06-03T00:03:56.311Z] ----------------------------------------------------------------------
+[debug] [2024-06-03T00:03:56.312Z] Command:       /usr/local/bin/node /usr/local/bin/firebase emulators:start
+[debug] [2024-06-03T00:03:56.312Z] CLI Version:   13.8.3
+[debug] [2024-06-03T00:03:56.312Z] Platform:      darwin
+[debug] [2024-06-03T00:03:56.313Z] Node Version:  v20.10.0
+[debug] [2024-06-03T00:03:56.313Z] Time:          Sun Jun 02 2024 19:03:56 GMT-0500 (Peru Standard Time)
+[debug] [2024-06-03T00:03:56.313Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-03T00:03:56.372Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-03T00:03:56.372Z] > authorizing via signed-in user (niceropez@gmail.com)
+[info] i  emulators: Starting emulators: hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: hosting"}}
+[debug] [2024-06-03T00:03:56.612Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[warn] ⚠  hosting: Hosting Emulator unable to start on port 5000, starting on 5002 instead. {"metadata":{"emulator":{"name":"hosting"},"message":"Hosting Emulator unable to start on port 5000, starting on 5002 instead."}}
+[debug] [2024-06-03T00:03:56.612Z] [hosting] Hosting Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-03T00:03:56.613Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5002}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2024-06-03T00:03:56.615Z] [hub] writing locator at /var/folders/7y/ldpz1xn17q1051dpmbpv9z6c0000gn/T/hub-legalguardapp.json
+[debug] [2024-06-03T00:03:56.620Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/legalguardapp/sites 
+[debug] [2024-06-03T00:03:58.163Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/legalguardapp/sites 200
+[debug] [2024-06-03T00:03:58.164Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/legalguardapp/sites {"sites":[{"name":"projects/legalguardapp/sites/legalguardapp","defaultUrl":"https://legalguardapp.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2024-06-03T00:03:58.164Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/legalguardapp/webApps/-/config [none]
+[debug] [2024-06-03T00:03:59.119Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/legalguardapp/webApps/-/config 200
+[debug] [2024-06-03T00:03:59.119Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/legalguardapp/webApps/-/config {"projectId":"legalguardapp","storageBucket":"legalguardapp.appspot.com","locationId":"southamerica-east1","apiKey":"AIzaSyByu9KuaRotiwnhF6Qn0gCuBsfHPd6l7n8","authDomain":"legalguardapp.firebaseapp.com","messagingSenderId":"943218231760"}
+[debug] [2024-06-03T00:03:59.128Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/legalguardapp [none]
+[debug] [2024-06-03T00:03:59.464Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/legalguardapp 200
+[debug] [2024-06-03T00:03:59.465Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/legalguardapp {"projectId":"legalguardapp","projectNumber":"943218231760","displayName":"LegalGuardApp","name":"projects/legalguardapp","resources":{"hostingSite":"legalguardapp","storageBucket":"legalguardapp.appspot.com","locationId":"southamerica-east1"},"state":"ACTIVE","etag":"1_f0857d2f-d688-40c2-b751-7c37c0a7b974"}
+[info] i  hosting[legalguardapp]: Serving hosting files from: build {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mbuild\u001b[22m"}}
+[info] ✔  hosting[legalguardapp]: Local server: http://127.0.0.1:5002 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://127.0.0.1:5002\u001b[22m\u001b[24m"}}
+[warn] ⚠  emulators: The Emulator UI is not starting, either because none of the running emulators have a UI component or the Emulator UI cannot determine the Project ID. Pass the --project flag to specify a project. {"metadata":{"emulator":{"name":"hub"},"message":"The Emulator UI is not starting, either because none of the running emulators have a UI component or the Emulator UI cannot determine the Project ID. Pass the --project flag to specify a project."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+└─────────────────────────────────────────────────────────────┘
+
+┌──────────┬────────────────┐
+│ Emulator │ Host:Port      │
+├──────────┼────────────────┤
+│ Hosting  │ 127.0.0.1:5002 │
+└──────────┴────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] "GET / HTTP/1.1" 200 896 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] \"GET / HTTP/1.1\" 200 896 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] "GET /static/css/main.e564ae8d.css HTTP/1.1" 200 - "http://127.0.0.1:5002/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] \"GET /static/css/main.e564ae8d.css HTTP/1.1\" 200 - \"http://127.0.0.1:5002/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] "GET /static/js/main.31e73d2c.js HTTP/1.1" 200 - "http://127.0.0.1:5002/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] \"GET /static/js/main.31e73d2c.js HTTP/1.1\" 200 - \"http://127.0.0.1:5002/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] "GET /static/js/main.31e73d2c.js HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] \"GET /static/js/main.31e73d2c.js HTTP/1.1\" 200 - \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] "GET /static/media/consejos.a6b9e8652338d32c11c5f18f831221f3.svg HTTP/1.1" 200 - "http://127.0.0.1:5002/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] \"GET /static/media/consejos.a6b9e8652338d32c11c5f18f831221f3.svg HTTP/1.1\" 200 - \"http://127.0.0.1:5002/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] "GET /static/media/logo.c4beb07cdc736b4632c2ae2f717cf4c5.svg HTTP/1.1" 200 - "http://127.0.0.1:5002/sign-in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:09 +0000] \"GET /static/media/logo.c4beb07cdc736b4632c2ae2f717cf4c5.svg HTTP/1.1\" 200 - \"http://127.0.0.1:5002/sign-in\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:10 +0000] "GET /manifest.json HTTP/1.1" 200 492 "http://127.0.0.1:5002/sign-in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:10 +0000] \"GET /manifest.json HTTP/1.1\" 200 492 \"http://127.0.0.1:5002/sign-in\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:10 +0000] "GET /favicon.ico HTTP/1.1" 200 - "http://127.0.0.1:5002/sign-in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:10 +0000] \"GET /favicon.ico HTTP/1.1\" 200 - \"http://127.0.0.1:5002/sign-in\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [03/Jun/2024:00:04:10 +0000] "GET /logo192.png HTTP/1.1" 200 152015 "http://127.0.0.1:5002/sign-in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [03/Jun/2024:00:04:10 +0000] \"GET /logo192.png HTTP/1.1\" 200 152015 \"http://127.0.0.1:5002/sign-in\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\""}}
