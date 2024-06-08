@@ -3,9 +3,11 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { IProfile } from "../../interfaces/IProfile";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import DiamondIcon from "@mui/icons-material/Diamond";
 import Box from "@mui/material/Box";
 import { CustomButton } from "../shared/widgets/Mui/Button";
 import { CustomTextField } from "../shared/widgets/Mui/Input";
+import IconButton from "@mui/material/IconButton/IconButton";
 
 interface IMembership {
   data: IProfile;
@@ -24,15 +26,45 @@ const Membership: React.FC<IMembership> = (props) => {
         maxWidth: 1000,
       }}
     >
-      <Typography
-        variant="h6"
-        color="primary"
-        sx={{ mb: 1, fontWeight: "bold" }}
-      >
-        Membresia
-      </Typography>
-
       <Grid2 container>
+        <Grid2 xs={12} md={6} sx={{ mb: 2 }}>
+          <Typography
+            variant="h6"
+            color="primary"
+            sx={{ mb: 1, fontWeight: "bold" }}
+          >
+            Membresia
+          </Typography>
+        </Grid2>
+        <Grid2
+          xs={12}
+          md={6}
+          sx={{
+            mb: 2,
+          }}
+        >
+          <Grid2 xs={12} sx={{ textAlign: "right" }}>
+            <CustomButton
+              variant="contained"
+              color="primary"
+              sx={{
+                width: "40%",
+                backgroundColor: "#E1F9F7",
+                color: "#193A32",
+              }}
+              fullWidth
+              onClick={() => props.setOpen(true)}
+            >
+              <>
+                <IconButton size="small">
+                  <DiamondIcon fontSize="inherit" color="primary" />
+                </IconButton>
+                Upgrade
+              </>
+            </CustomButton>
+          </Grid2>
+        </Grid2>
+
         <Grid2 xs={12} md={6} sx={{ mb: 2 }}>
           <Typography color="primary" sx={{ mt: 2, fontWeight: "bold" }}>
             Plan
@@ -45,20 +77,6 @@ const Membership: React.FC<IMembership> = (props) => {
             sx={{ width: "80%" }}
             fullWidth
           />
-        </Grid2>
-        <Grid2
-          xs={12}
-          md={6}
-          sx={{ mb: 2, display: "flex", alignItems: "center" }}
-        >
-          <CustomButton
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={() => props.setOpen(true)}
-          >
-            Upgrade
-          </CustomButton>
         </Grid2>
       </Grid2>
       <Grid2 container>

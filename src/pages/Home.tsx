@@ -20,7 +20,7 @@ export const Home = () => {
         spacing={2}
         sx={{
           backgroundColor: "#FDF4E6",
-          pb: 1,
+          pb: 1.5,
           pr: 1,
           justifyContent: "center",
           alignItems: "start",

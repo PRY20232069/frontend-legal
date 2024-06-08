@@ -6,7 +6,8 @@ import Box from "@mui/material/Box";
 import { CustomTextField } from "../shared/widgets/Mui/Input";
 import { CustomButton } from "../shared/widgets/Mui/Button";
 import IconButton from "@mui/material/IconButton";
-import EditOffIcon from "@mui/icons-material/EditOff";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 import FormHelperText from "@mui/material/FormHelperText";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../../components/shared/widgets/ToastDisplay";
@@ -219,15 +220,24 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
                 <CustomButton
                   variant="contained"
                   color="primary"
-                  sx={{ width: "80%" }}
+                  sx={{
+                    width: "40%",
+                    backgroundColor: "#E1F9F7",
+                    color: "#193A32",
+                  }}
                   fullWidth
                   onClick={() => setEdit(true)}
                 >
-                  Editar
+                  <>
+                    <IconButton size="small">
+                      <EditIcon fontSize="inherit" color="primary" />
+                    </IconButton>
+                    Editar
+                  </>
                 </CustomButton>
               ) : (
                 <IconButton size="large" onClick={disableEdit}>
-                  <EditOffIcon fontSize="inherit" color="primary" />
+                  <CloseIcon fontSize="inherit" color="primary" />
                 </IconButton>
               )}
             </Grid2>
@@ -372,15 +382,15 @@ const PersonalInformation: React.FC<IPersonalInfo> = (props) => {
           </Grid2>
         </Grid2>
         {edit && (
-          <Grid2 xs={12} sx={{ textAlign: "end" }}>
+          <Grid2 xs={12} sx={{ textAlign: "start" }}>
             <CustomButton
               variant="contained"
               color="primary"
               type="submit"
-              sx={{ width: "30%" }}
+              sx={{ width: "30%", height: "40px" }}
               fullWidth
             >
-              Aplicar cambios
+              Guardar
             </CustomButton>
           </Grid2>
         )}
