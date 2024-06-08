@@ -81,7 +81,11 @@ export const RecentContractsList = () => {
       <RecentContractsListContainer>
         {contractItems &&
           (contractItems.length > 0 ? (
-            <TableContainer>
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{ boxShadow: "none", border: "1px solid #EDEBF0" }}
+            >
               <Table>
                 <TableHead sx={{ backgroundColor: "#FCFCFC" }}>
                   <TableRow>
