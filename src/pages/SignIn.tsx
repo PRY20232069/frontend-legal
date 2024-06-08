@@ -190,7 +190,7 @@ export const SignIn = () => {
                 Ingresar
               </CustomButton>
             </div>
-            {/* <Box
+            <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -210,7 +210,7 @@ export const SignIn = () => {
                   Regístrate
                 </Typography>
               </Link>
-            </Box> */}
+            </Box>
             <Box
               sx={{
                 display: "flex",
