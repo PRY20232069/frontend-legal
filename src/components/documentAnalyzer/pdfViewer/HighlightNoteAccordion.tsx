@@ -23,7 +23,7 @@ export const HighlightNoteAccordion: React.FC<HighlightNoteAccordionProps> = ({
         id="panel1a-header"
         sx={{ backgroundColor: bgColor }}
       >
-        <Typography variant="body1">{title}</Typography>
+        <Typography variant="body2">{title}</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ backgroundColor: bgColor }}>
         <Typography variant="body2">{content}</Typography>

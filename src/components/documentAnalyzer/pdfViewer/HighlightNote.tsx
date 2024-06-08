@@ -23,7 +23,7 @@ export const HighlightNote: React.FC<HighlightNoteProps> = ({
     <div
       key={note.id}
       style={{
-        borderBottom: "1px solid rgba(0, 0, 0, .3)",
+        // borderBottom: "1px solid rgba(0, 0, 0, .3)",
         cursor: "pointer",
         padding: "8px",
       }}
@@ -38,7 +38,7 @@ export const HighlightNote: React.FC<HighlightNoteProps> = ({
         style={{
           fontSize: ".75rem",
           lineHeight: 1.5,
-          margin: "0 0 8px 0",
+          margin: "0 0 0px 0",
           padding: "8px 12px",
           textAlign: "justify",
           backgroundColor: "#F4FFFC",

@@ -38,7 +38,7 @@
     "start-dev": "HOST=localhost env-cmd -f .env.dev react-scripts start",
     "start-pre": "HOST=localhost env-cmd -f .env.preproduction react-scripts start",
     "start-pro": "HOST=localhost env-cmd -f .env.production react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && firebase deploy",
     "build-pro": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -81,7 +81,7 @@ export const RecentContractsList = () => {
       <RecentContractsListContainer>
         {contractItems &&
           (contractItems.length > 0 ? (
-            <TableContainer component={Paper}>
+            <TableContainer>
               <Table>
                 <TableHead sx={{ backgroundColor: "#FCFCFC" }}>
                   <TableRow>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ContractResource } from "../resources/responses/ContractResource";
 import { ContractsApiService } from "../services/ContractsApiService";
 import { PageContainer } from "../components/shared/layout/PageContainer";
-import { PageTitle } from "../components/shared/widgets/PageTitle";
+import { PageSubtitle } from "../components/shared/widgets/PageSubtitle";
 
 import { PDFViewer } from "../components/documentAnalyzer/pdfViewer/PDFViewer";
 import { TermsApiService } from "../services/TermsApiService";
@@ -11,6 +11,8 @@ import { TermResource } from "../resources/responses/TermResource";
 import LoadingComponent from "../components/shared/widgets/LoadingComponent";
 import toast, { Toaster } from "react-hot-toast";
 import ToastDisplay from "../components/shared/widgets/ToastDisplay";
+import { setTimeout } from "timers/promises";
+import { PageTitle } from "../components/shared/widgets/PageTitle";
 
 const getContractById = async (id: number): Promise<any> => {
   try {
@@ -84,33 +86,39 @@ export const DocumentAnalyzer = () => {
   const fetchContract = async () => {
     setLoading(true);
     if (id !== undefined) {
-      const contractData = await getContractById(Number(id));
-      setContract(contractData);
-      if (contractData) {
-        const termsData = await getAllTermsByContractId(contractData.id);
-        console.log(termsData);
-        if (termsData) {
-          const badTerms = getBadTerms(termsData, Number(id));
-          console.log(badTerms);
-          setBadTerms(badTerms);
-        }
-      } else {
-        toast.error(
-          <ToastDisplay
-            title="Error en el servidor, intenta nuevamente"
-            message=""
-          />
-        );
-      }
-    } else {
-      toast.error(
-        <ToastDisplay
-          title="Error en el servidor, intenta nuevamente"
-          message=""
-        />
-      );
+      await getContractById(Number(id))
+        .then(async (contractData) => {
+          setContract(contractData);
+          await getAllTermsByContractId(contractData.id)
+            .then((termsData) => {
+              console.log(termsData);
+              if (termsData) {
+                const badTerms = getBadTerms(termsData, Number(id));
+                console.log(badTerms);
+                setBadTerms(badTerms);
+              }
+            })
+            .catch((error) => {
+              toast.error(
+                <ToastDisplay
+                  title="Error en el servidor, intenta nuevamente"
+                  message=""
+                />
+              );
+            });
+        })
+        .catch((error) => {
+          toast.error(
+            <ToastDisplay
+              title="Error en el servidor, intenta nuevamente"
+              message=""
+            />
+          );
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -118,8 +126,11 @@ export const DocumentAnalyzer = () => {
   }, [id]);
 
   return (
-    <PageContainer>
-      <PageTitle>{contract && contract.name}</PageTitle>
+    <div style={{ width: "100%" }}>
+      <div style={{ margin: "30px 0px 0px 15px" }}>
+        <PageTitle>Visualizar contratos</PageTitle>
+        <PageSubtitle>{contract && contract.name}</PageSubtitle>
+      </div>
 
       {!loading ? (
         contract && contract.file_url ? (
@@ -133,6 +144,6 @@ export const DocumentAnalyzer = () => {
         <LoadingComponent />
       )}
       <Toaster />
-    </PageContainer>
+    </div>
   );
 };

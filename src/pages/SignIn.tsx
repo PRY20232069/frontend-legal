@@ -231,7 +231,7 @@ export const SignIn = () => {
                 ¿Olvidaste tu contraseña?
               </Typography>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -248,7 +248,7 @@ export const SignIn = () => {
                   ¿Aún no te encuentras registrado?
                 </Typography>
               </Link>
-            </Box>
+            </Box> */}
           </form>
         </Grid2>
       </Box>

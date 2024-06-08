@@ -19,7 +19,7 @@ import {
   Paper,
 } from "@mui/material";
 import { Drawer, DrawerHeader } from "../../Material";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Logo from "../../../../assets/svgs/logo.svg";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -101,7 +101,9 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
     <Drawer variant="permanent" open={props.open}>
       <Paper elevation={0}>
         <DrawerHeader sx={{ justifyContent: "center" }}>
-          <img src={Logo} width={150} />
+          <Link to="/">
+            <img src={Logo} width={190} style={{ margin: "15  px 0" }} />
+          </Link>
           {props.isSmallScreen && (
             <IconButton onClick={handleDrawer}>
               <ChevronLeftIcon />
@@ -110,7 +112,13 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
         </DrawerHeader>
       </Paper>
       <Divider />
-      <List>
+      <List
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
         {iconos.map((element, index) => (
           <ListItem key={index} disablePadding={props.isSmallScreen}>
             <ListItemButton
@@ -126,7 +134,10 @@ const SidebarNavigation: React.FC<ISidebarNavigation> = (props) => {
             </ListItemButton>
           </ListItem>
         ))}
-        <ListItem disablePadding={props.isSmallScreen} sx={{ height: "100vh" }}>
+        <ListItem
+          disablePadding={props.isSmallScreen}
+          sx={{ marginTop: "auto" }}
+        >
           <ListItemButton onClick={logoutIcon}>
             <ListItemIcon>
               <LogoutIcon />

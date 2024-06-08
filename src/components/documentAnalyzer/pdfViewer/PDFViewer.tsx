@@ -44,6 +44,8 @@ import React from "react";
 import { TermResource } from "../../../resources/responses/TermResource";
 import { HighlightNote } from "./HighlightNote";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 interface PDFViewerProps {
   fileUrl: string;
@@ -108,6 +110,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
     []
   );
   const [notes, setNotes] = React.useState<Note[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const noteEles: Map<number, HTMLElement> = new Map();
 
   useEffect(() => {
@@ -123,7 +126,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
     if (!canShowBadTerms.documentLoaded || !canShowBadTerms.badTermsLoaded) {
       return;
     }
-
+    setLoading(true);
     setTimeout(() => {
       let allNewHighlightAreas: HighlightArea[] = [];
       let notes: Note[] = [];
@@ -159,6 +162,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
 
       setHighlightAreas(allNewHighlightAreas);
       setNotes(notes);
+      setLoading(false);
     }, 4000);
   }, [canShowBadTerms]);
 
@@ -192,7 +196,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
         style={{
           border: "1px solid rgba(0, 0, 0, 0.3)",
           display: "flex",
-          height: "700px",
+          height: "100vh",
           overflow: "hidden",
         }}
       >
@@ -221,22 +225,45 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
           <Typography variant="body2" color="#193A32" sx={{ ml: 2, my: 1 }}>
             Comentarios
           </Typography>
-          {notes.length === 0 && (
-            <div style={{ textAlign: "center" }}>
-              Tras analizar el contrato, no se hallaron cláusulas abusivas;
-              todas las disposiciones están en conformidad con las normativas
-              vigentes.
+          {loading ? (
+            <div
+              style={{
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <CircularProgress color="primary" />
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ mt: 2, fontWeight: "bold" }}
+              >
+                Cargando...
+              </Typography>
             </div>
+          ) : (
+            <>
+              {notes.length === 0 && (
+                <div style={{ textAlign: "center" }}>
+                  Tras analizar el contrato, no se hallaron cláusulas abusivas;
+                  todas las disposiciones están en conformidad con las
+                  normativas vigentes.
+                </div>
+              )}
+              {notes.map((note) => {
+                return (
+                  <HighlightNote
+                    key={note.id}
+                    note={note}
+                    jumpToHighlightArea={jumpToHighlightArea}
+                  />
+                );
+              })}
+            </>
           )}
-          {notes.map((note) => {
-            return (
-              <HighlightNote
-                key={note.id}
-                note={note}
-                jumpToHighlightArea={jumpToHighlightArea}
-              />
-            );
-          })}
         </div>
       </div>
     </Worker>
