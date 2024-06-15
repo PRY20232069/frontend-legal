@@ -40,7 +40,7 @@ export const HighlightNote: React.FC<HighlightNoteProps> = ({
           lineHeight: 1.5,
           margin: "0 0 0px 0",
           padding: "8px 12px",
-          textAlign: "justify",
+          // textAlign: "justify",
           backgroundColor: "#F4FFFC",
           borderRadius: "10px",
         }}
