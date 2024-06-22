@@ -46,6 +46,9 @@ import { HighlightNote } from "./HighlightNote";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import Divider from "@mui/material/Divider";
+import HighLightDataExtracted from "./HighlightDataExtracted";
+import { HighlightNoteAccordion } from "./HighlightNoteAccordion";
 
 interface PDFViewerProps {
   fileUrl: string;
@@ -222,9 +225,31 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, badTerms }) => {
             background: "#FCFCFC",
           }}
         >
-          <Typography variant="body2" color="#193A32" sx={{ ml: 2, my: 1 }}>
-            Comentarios
-          </Typography>
+          {!loading && (
+            <div>
+              {/* <Divider textAlign="center">
+                <Typography
+                  variant="body1"
+                  color="#193A32"
+                  sx={{ ml: 2, mb: 1, mt: 3, fontWeight: "bold" }}
+                >
+                  Detalles del contrato
+                </Typography>
+              </Divider> */}
+
+              <HighLightDataExtracted />
+            </div>
+          )}
+          <Divider textAlign="center">
+            <Typography
+              variant="body1"
+              color="#193A32"
+              sx={{ ml: 2, mb: 1, mt: 3, fontWeight: "bold" }}
+            >
+              Comentarios
+            </Typography>
+          </Divider>
+
           {loading ? (
             <div
               style={{

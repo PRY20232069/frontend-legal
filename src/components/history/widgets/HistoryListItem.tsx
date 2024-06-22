@@ -50,12 +50,12 @@ type Props = {
 const ListItemContainer = styled("li")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: "white",
-  margin: "3px 6px",
-  "&:last-child": {
-    borderRadius: "0 0 10px 10px",
-    margin: "3px 6px 6px",
-  },
+  // backgroundColor: "white",
+  // margin: "3px 6px",
+  // "&:last-child": {
+  //   borderRadius: "0 0 10px 10px",
+  //   margin: "3px 6px 6px",
+  // },
   color: "#193A32",
 }));
 
